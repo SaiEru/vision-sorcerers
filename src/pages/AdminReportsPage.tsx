@@ -240,7 +240,7 @@ const AdminReportsPage = () => {
               const explanation = a.risk_explanation ? a.risk_explanation.split("\n").filter(Boolean) : [];
               const clinicalSteps = a.clinical_steps ? a.clinical_steps.split("\n").filter(Boolean) : [];
               return (
-                <div key={a.id} className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+                <div key={a.id} className="glass-card glow-border overflow-hidden">
                   <div className="flex items-center justify-between p-5 cursor-pointer hover:bg-muted/30 transition-colors" onClick={() => setExpandedId(isExpanded ? null : a.id)}>
                     <div className="flex items-start gap-4">
                       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
