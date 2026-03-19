@@ -304,8 +304,8 @@ const AssessmentPage = () => {
 
   if (mode === "uploading") {
     return (
+      <AppLayout>
       <div className="min-h-screen bg-background">
-        <Navbar />
         {fileInput}
         <div className="mx-auto max-w-4xl px-6 py-24 text-center">
           <Loader2 className="mx-auto h-12 w-12 animate-spin text-primary" />
