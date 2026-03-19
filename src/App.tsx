@@ -25,7 +25,9 @@ const ProtectedRoute = ({ children, allowedRole }: { children: React.ReactNode; 
 
   if (loading) return <div className="flex min-h-screen items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
   if (!user) return <Navigate to="/login" replace />;
-  if (allowedRole && profile?.role !== allowedRole) return <Navigate to="/login" replace />;
+  // If profile hasn't loaded yet but user exists, show loading
+  if (!profile) return <div className="flex min-h-screen items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
+  if (allowedRole && profile.role !== allowedRole) return <Navigate to="/login" replace />;
 
   return <>{children}</>;
 };
