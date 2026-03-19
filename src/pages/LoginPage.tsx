@@ -26,7 +26,6 @@ const LoginPage = () => {
   // Seed admin on mount
   useEffect(() => {
     const seedAdmin = async () => {
-      setSeeding(true);
       try {
         const url = import.meta.env.VITE_SUPABASE_URL;
         const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -37,7 +36,6 @@ const LoginPage = () => {
       } catch {
         // ignore
       }
-      setSeeding(false);
     };
     seedAdmin();
   }, []);
