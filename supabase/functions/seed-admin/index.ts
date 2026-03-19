@@ -2,12 +2,12 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders });
   }
 
   try {
@@ -20,17 +20,30 @@ Deno.serve(async (req) => {
     const adminEmail = "erukullasai0@gmail.com";
     const adminPassword = "123456";
 
-    // Check if admin exists
-    const { data: existingUsers } = await supabase.auth.admin.listUsers();
-    const adminExists = existingUsers?.users?.some((u: any) => u.email === adminEmail);
+    const { data: existingUsersData } = await supabase.auth.admin.listUsers();
+    const existingAdmin = existingUsersData?.users?.find((u: any) => u.email === adminEmail);
 
-    if (adminExists) {
-      return new Response(JSON.stringify({ message: "Admin already exists" }), {
+    if (existingAdmin) {
+      const { error: profileError } = await supabase.from("profiles").upsert(
+        {
+          id: existingAdmin.id,
+          email: adminEmail,
+          full_name: (existingAdmin.user_metadata?.full_name as string) || "Admin",
+        },
+        { onConflict: "id" },
+      );
+      if (profileError) throw profileError;
+
+      const { error: roleError } = await supabase
+        .from("user_roles")
+        .upsert({ user_id: existingAdmin.id, role: "admin" }, { onConflict: "user_id,role" });
+      if (roleError) throw roleError;
+
+      return new Response(JSON.stringify({ message: "Admin already exists", userId: existingAdmin.id }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    // Create admin user
     const { data, error } = await supabase.auth.admin.createUser({
       email: adminEmail,
       password: adminPassword,
@@ -40,7 +53,24 @@ Deno.serve(async (req) => {
 
     if (error) throw error;
 
-    return new Response(JSON.stringify({ message: "Admin created", userId: data.user.id }), {
+    const adminId = data.user.id;
+
+    const { error: profileError } = await supabase.from("profiles").upsert(
+      {
+        id: adminId,
+        email: adminEmail,
+        full_name: "Admin",
+      },
+      { onConflict: "id" },
+    );
+    if (profileError) throw profileError;
+
+    const { error: roleError } = await supabase
+      .from("user_roles")
+      .upsert({ user_id: adminId, role: "admin" }, { onConflict: "user_id,role" });
+    if (roleError) throw roleError;
+
+    return new Response(JSON.stringify({ message: "Admin created", userId: adminId }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {

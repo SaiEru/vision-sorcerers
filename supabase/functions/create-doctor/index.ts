@@ -2,12 +2,12 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders });
   }
 
   try {
@@ -15,26 +15,30 @@ Deno.serve(async (req) => {
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
 
-    // Verify caller is admin
-    const authHeader = req.headers.get("Authorization")!;
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) throw new Error("Unauthorized");
+
     const callerClient = createClient(supabaseUrl, anonKey, {
       global: { headers: { Authorization: authHeader } },
     });
-    const { data: { user: caller } } = await callerClient.auth.getUser();
+
+    const {
+      data: { user: caller },
+    } = await callerClient.auth.getUser();
     if (!caller) throw new Error("Unauthorized");
 
     const adminClient = createClient(supabaseUrl, serviceRoleKey, {
       auth: { autoRefreshToken: false, persistSession: false },
     });
 
-    // Check caller is admin
-    const { data: callerProfile } = await adminClient
-      .from("profiles")
+    const { data: callerAdminRole } = await adminClient
+      .from("user_roles")
       .select("role")
-      .eq("id", caller.id)
-      .single();
+      .eq("user_id", caller.id)
+      .eq("role", "admin")
+      .maybeSingle();
 
-    if (callerProfile?.role !== "admin") throw new Error("Only admins can create doctors");
+    if (!callerAdminRole) throw new Error("Only admins can create doctors");
 
     const { email, password, full_name, specialization, phone, license_number } = await req.json();
 
@@ -42,7 +46,6 @@ Deno.serve(async (req) => {
       throw new Error("Email, password, and full name are required");
     }
 
-    // Create user
     const { data, error } = await adminClient.auth.admin.createUser({
       email,
       password,
@@ -52,13 +55,30 @@ Deno.serve(async (req) => {
 
     if (error) throw error;
 
-    // Update profile with extra fields
-    await adminClient
-      .from("profiles")
-      .update({ specialization: specialization || "", phone: phone || "", license_number: license_number || "" })
-      .eq("id", data.user.id);
+    const doctorId = data.user.id;
 
-    return new Response(JSON.stringify({ message: "Doctor created", userId: data.user.id }), {
+    const { error: roleError } = await adminClient
+      .from("user_roles")
+      .upsert({ user_id: doctorId, role: "doctor" }, { onConflict: "user_id,role" });
+    if (roleError) throw roleError;
+
+    const { error: profileError } = await adminClient
+      .from("profiles")
+      .upsert(
+        {
+          id: doctorId,
+          email,
+          full_name,
+          specialization: specialization || "",
+          phone: phone || "",
+          license_number: license_number || "",
+        },
+        { onConflict: "id" },
+      );
+
+    if (profileError) throw profileError;
+
+    return new Response(JSON.stringify({ message: "Doctor created", userId: doctorId }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
