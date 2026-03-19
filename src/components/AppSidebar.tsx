@@ -49,7 +49,7 @@ export function AppSidebar() {
           </div>
           {!collapsed && (
             <div className="overflow-hidden">
-              <p className="text-sm font-semibold text-foreground truncate">Eye Complication Risk</p>
+              <p className="text-sm font-semibold text-foreground truncate">Vision Sorcerers</p>
               <p className="text-[10px] text-muted-foreground">{isAdmin ? "Admin Panel" : `Dr. ${profile?.full_name || ""}`}</p>
             </div>
           )}

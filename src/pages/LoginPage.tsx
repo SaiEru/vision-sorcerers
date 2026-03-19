@@ -178,7 +178,7 @@ const LoginPage = () => {
                 transition={{ delay: 0.3 }}
                 className="mb-10 text-sm text-white/40"
               >
-                Eye Complication Risk Intelligence Platform
+                Vision Sorcerers — AI Eye Care Platform
               </motion.p>
 
               <div className="grid w-full gap-4 sm:grid-cols-2">
