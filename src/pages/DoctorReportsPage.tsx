@@ -149,7 +149,7 @@ const DoctorReportsPage = () => {
         {loading ? (
           <div className="mt-12 flex justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>
         ) : filtered.length === 0 ? (
-          <div className="mt-8 rounded-xl border border-border bg-card p-12 text-center shadow-sm">
+          <div className="mt-8 glass-card glow-border p-12 text-center">
             <FileText className="mx-auto h-12 w-12 text-muted-foreground/40" />
             <h3 className="mt-4 text-lg font-semibold text-foreground">No reports found</h3>
             <p className="mt-2 text-muted-foreground">Try adjusting your filters or complete an assessment.</p>
