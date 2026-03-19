@@ -60,8 +60,8 @@ const AdminDashboardPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black text-white">
-      <Navbar />
+    <AppLayout>
+      <div className="min-h-screen bg-background">
 
       <div className="mx-auto max-w-7xl px-6 py-10">
         <motion.h1 
