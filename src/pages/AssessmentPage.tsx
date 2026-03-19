@@ -318,47 +318,42 @@ const AssessmentPage = () => {
   if (mode === "entry") {
     return (
       <AppLayout>
-        <div className="min-h-screen bg-background">
-          {fileInput}
-          <div className="mx-auto max-w-4xl px-6 py-12">
-            <h1 className="text-3xl font-bold text-foreground">Patient Risk Assessment</h1>
-            {patientName && (
-              <p className="mt-1 text-lg text-primary font-medium">Patient: {patientName}</p>
-            )}
-            <p className="mt-2 text-muted-foreground">Choose how you'd like to enter clinical data.</p>
+        {fileInput}
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 py-8 sm:py-12">
+          <h1 className="text-3xl font-bold text-foreground">Patient Risk Assessment</h1>
+          {patientName && <p className="mt-1 text-lg text-primary font-medium">Patient: {patientName}</p>}
+          <p className="mt-2 text-muted-foreground">Choose how you'd like to enter clinical data.</p>
 
-            {uploadError && (
-              <div className="mt-4 flex items-center gap-3 rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-                <AlertCircle className="h-5 w-5 shrink-0" />
-                {uploadError}
-              </div>
-            )}
-
-            <div className="mt-10 grid gap-6 md:grid-cols-2">
-              <button onClick={handleUploadClick} className="group rounded-xl border border-border bg-card p-8 text-center shadow-sm transition-all hover:border-primary/30 hover:shadow-md">
-                <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-                  <FileText className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground">Upload Medical Report</h3>
-                <p className="mt-2 text-sm text-muted-foreground">Upload a PDF or image-based post-operative report. AI will extract clinical values and pre-fill the form.</p>
-                <p className="mt-4 text-xs text-muted-foreground">Supports PDF, JPEG, PNG</p>
-              </button>
-
-              <button onClick={() => setMode("form")} className="group rounded-xl border border-border bg-card p-8 text-center shadow-sm transition-all hover:border-primary/30 hover:shadow-md">
-                <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-                  <PenLine className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground">Manual Data Entry</h3>
-                <p className="mt-2 text-sm text-muted-foreground">Enter all clinical data manually using the step-by-step assessment form.</p>
-                <p className="mt-4 text-xs text-muted-foreground">7 assessment steps</p>
-              </button>
+          {uploadError && (
+            <div className="mt-4 flex items-center gap-3 rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
+              <AlertCircle className="h-5 w-5 shrink-0" />{uploadError}
             </div>
+          )}
 
-            <footer className="mt-16 flex flex-wrap items-center justify-between border-t border-border pt-6 text-xs text-muted-foreground">
-              <p><strong>Disclaimer:</strong> For demonstration purposes only. Not a medical diagnosis tool.</p>
-              <p>Built using AI &amp; Machine Learning concepts</p>
-            </footer>
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            <button onClick={handleUploadClick} className="group glass-card glow-border p-8 text-center transition-all hover:border-primary/40 hover:shadow-[0_0_30px_hsl(221_83%_53%/0.1)]">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+                <FileText className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">Upload Medical Report</h3>
+              <p className="mt-2 text-sm text-muted-foreground">Upload a PDF or image-based post-operative report. AI will extract clinical values and pre-fill the form.</p>
+              <p className="mt-4 text-xs text-muted-foreground">Supports PDF, JPEG, PNG</p>
+            </button>
+
+            <button onClick={() => setMode("form")} className="group glass-card glow-border p-8 text-center transition-all hover:border-primary/40 hover:shadow-[0_0_30px_hsl(221_83%_53%/0.1)]">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+                <PenLine className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">Manual Data Entry</h3>
+              <p className="mt-2 text-sm text-muted-foreground">Enter all clinical data manually using the step-by-step assessment form.</p>
+              <p className="mt-4 text-xs text-muted-foreground">7 assessment steps</p>
+            </button>
           </div>
+
+          <footer className="mt-16 flex flex-wrap items-center justify-between border-t border-border pt-6 text-xs text-muted-foreground">
+            <p><strong>Disclaimer:</strong> For demonstration purposes only. Not a medical diagnosis tool.</p>
+            <p>Built using AI &amp; Machine Learning concepts</p>
+          </footer>
         </div>
       </AppLayout>
     );
