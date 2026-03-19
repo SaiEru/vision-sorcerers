@@ -7,7 +7,7 @@ const corsHeaders = {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders });
   }
 
   try {
@@ -15,30 +15,35 @@ Deno.serve(async (req) => {
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
 
-    const authHeader = req.headers.get("Authorization")!;
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) throw new Error("Unauthorized");
+
     const callerClient = createClient(supabaseUrl, anonKey, {
       global: { headers: { Authorization: authHeader } },
     });
-    const { data: { user: caller } } = await callerClient.auth.getUser();
+
+    const {
+      data: { user: caller },
+    } = await callerClient.auth.getUser();
     if (!caller) throw new Error("Unauthorized");
 
     const adminClient = createClient(supabaseUrl, serviceRoleKey, {
       auth: { autoRefreshToken: false, persistSession: false },
     });
 
-    const { data: callerProfile } = await adminClient
-      .from("profiles")
+    const { data: callerAdminRole } = await adminClient
+      .from("user_roles")
       .select("role")
-      .eq("id", caller.id)
-      .single();
+      .eq("user_id", caller.id)
+      .eq("role", "admin")
+      .maybeSingle();
 
-    if (callerProfile?.role !== "admin") throw new Error("Only admins can update doctors");
+    if (!callerAdminRole) throw new Error("Only admins can update doctors");
 
     const { doctor_id, email, password, full_name, specialization, phone, license_number, date_of_birth, address, qualification, experience_years, department, bio } = await req.json();
 
     if (!doctor_id) throw new Error("doctor_id is required");
 
-    // Update auth user (email/password) if provided
     const authUpdate: Record<string, unknown> = {};
     if (email) authUpdate.email = email;
     if (password) authUpdate.password = password;
@@ -48,7 +53,6 @@ Deno.serve(async (req) => {
       if (error) throw error;
     }
 
-    // Update profile fields
     const profileUpdate: Record<string, unknown> = {};
     if (full_name !== undefined) profileUpdate.full_name = full_name;
     if (email !== undefined) profileUpdate.email = email;

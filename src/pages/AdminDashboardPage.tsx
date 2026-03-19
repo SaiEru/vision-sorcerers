@@ -14,8 +14,8 @@ const AdminDashboardPage = () => {
 
   useEffect(() => {
     const load = async () => {
-      const [doctorsRes, patientsRes, assessmentsRes] = await Promise.all([
-        db.from("profiles").select("id", { count: "exact" }).eq("role", "doctor"),
+      const [doctorRolesRes, patientsRes, assessmentsRes] = await Promise.all([
+        db.from("user_roles").select("user_id").eq("role", "doctor"),
         db.from("patients").select("id", { count: "exact" }),
         db.from("assessments").select("*"),
       ]);
@@ -24,7 +24,7 @@ const AdminDashboardPage = () => {
       const highRisk = allAssessments.filter((a: any) => a.risk_level === "High" || a.risk_level === "Critical").length;
 
       setStats({
-        totalDoctors: doctorsRes.count || 0,
+        totalDoctors: doctorRolesRes.data?.length || 0,
         totalPatients: patientsRes.count || 0,
         totalAssessments: allAssessments.length,
         highRiskCount: highRisk,

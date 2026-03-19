@@ -28,10 +28,16 @@ const AdminReportsPage = () => {
 
   useEffect(() => {
     const load = async () => {
-      const [{ data: assessData }, { data: profileData }] = await Promise.all([
+      const [{ data: assessData }, { data: doctorRoleRows }] = await Promise.all([
         db.from("assessments").select("*").order("created_at", { ascending: false }),
-        db.from("profiles").select("*").eq("role", "doctor"),
+        db.from("user_roles").select("user_id").eq("role", "doctor"),
       ]);
+
+      const doctorIds = (doctorRoleRows || []).map((r: any) => r.user_id);
+      const { data: profileData } = doctorIds.length
+        ? await db.from("profiles").select("*").in("id", doctorIds)
+        : { data: [] as any[] };
+
       setAssessments(assessData || []);
       const map: Record<string, any> = {};
       (profileData || []).forEach((p: any) => { map[p.id] = p; });

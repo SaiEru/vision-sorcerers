@@ -53,7 +53,16 @@ const AdminDoctorsPage = () => {
   const { toast } = useToast();
 
   const loadDoctors = async () => {
-    const { data } = await db.from("profiles").select("*").eq("role", "doctor").order("created_at", { ascending: false });
+    const { data: roleRows } = await db.from("user_roles").select("user_id").eq("role", "doctor");
+    const doctorIds = (roleRows || []).map((r: any) => r.user_id);
+
+    if (doctorIds.length === 0) {
+      setDoctors([]);
+      setLoading(false);
+      return;
+    }
+
+    const { data } = await db.from("profiles").select("*").in("id", doctorIds).order("created_at", { ascending: false });
     setDoctors((data as Doctor[]) || []);
     setLoading(false);
   };

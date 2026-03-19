@@ -12,7 +12,6 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [seeding, setSeeding] = useState(false);
   const { signIn, user, profile, loading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -27,7 +26,6 @@ const LoginPage = () => {
   // Seed admin on mount
   useEffect(() => {
     const seedAdmin = async () => {
-      setSeeding(true);
       try {
         const url = import.meta.env.VITE_SUPABASE_URL;
         const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -38,7 +36,6 @@ const LoginPage = () => {
       } catch {
         // ignore
       }
-      setSeeding(false);
     };
     seedAdmin();
   }, []);
@@ -53,7 +50,7 @@ const LoginPage = () => {
     }
   };
 
-  if (loading || seeding) {
+  if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
