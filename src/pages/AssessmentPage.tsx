@@ -361,8 +361,7 @@ const AssessmentPage = () => {
           </footer>
         </div>
       </div>
-    );
-  }
+      </AppLayout>
 
   if (mode === "result" && result) {
     return (
