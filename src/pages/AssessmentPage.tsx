@@ -313,7 +313,7 @@ const AssessmentPage = () => {
           <p className="mt-2 text-muted-foreground">AI is extracting clinical values from your report. This may take a moment.</p>
         </div>
       </div>
-    );
+      </AppLayout>
   }
 
   if (mode === "entry") {
