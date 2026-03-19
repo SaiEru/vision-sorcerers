@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/lib/supabaseDb";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,7 +43,7 @@ const DoctorDashboardPage = () => {
 
   const loadPatients = async () => {
     if (!user) return;
-    const { data } = await supabase
+    const { data } = await db
       .from("patients")
       .select("*")
       .eq("doctor_id", user.id)
@@ -53,7 +54,7 @@ const DoctorDashboardPage = () => {
 
   const loadAssessmentCounts = async () => {
     if (!user) return;
-    const { data } = await supabase
+    const { data } = await db
       .from("assessments")
       .select("id, patient_id")
       .eq("doctor_id", user.id);
@@ -80,7 +81,7 @@ const DoctorDashboardPage = () => {
       return;
     }
     setSubmitting(true);
-    const { error } = await supabase.from("patients").insert({
+    const { error } = await db.from("patients").insert({
       doctor_id: user.id,
       full_name: form.full_name,
       age: form.age ? parseInt(form.age) : null,
@@ -103,7 +104,7 @@ const DoctorDashboardPage = () => {
   const handleViewPatient = async (patient: Patient) => {
     setDetailPatient(patient);
     setLoadingAssessments(true);
-    const { data } = await supabase
+    const { data } = await db
       .from("assessments")
       .select("*")
       .eq("doctor_id", user!.id)

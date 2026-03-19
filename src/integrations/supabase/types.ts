@@ -14,7 +14,149 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      assessments: {
+        Row: {
+          assessment_data: Json | null
+          clinical_steps: string | null
+          created_at: string
+          doctor_id: string
+          id: string
+          patient_id: string | null
+          patient_name: string
+          risk_explanation: string | null
+          risk_level: string | null
+          risk_score: number | null
+          status: string | null
+          surgery_type: string | null
+        }
+        Insert: {
+          assessment_data?: Json | null
+          clinical_steps?: string | null
+          created_at?: string
+          doctor_id: string
+          id?: string
+          patient_id?: string | null
+          patient_name?: string
+          risk_explanation?: string | null
+          risk_level?: string | null
+          risk_score?: number | null
+          status?: string | null
+          surgery_type?: string | null
+        }
+        Update: {
+          assessment_data?: Json | null
+          clinical_steps?: string | null
+          created_at?: string
+          doctor_id?: string
+          id?: string
+          patient_id?: string | null
+          patient_name?: string
+          risk_explanation?: string | null
+          risk_level?: string | null
+          risk_score?: number | null
+          status?: string | null
+          surgery_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessments_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      patients: {
+        Row: {
+          age: number | null
+          contact_number: string | null
+          created_at: string
+          diagnosis: string | null
+          doctor_id: string
+          full_name: string
+          gender: string | null
+          id: string
+          notes: string | null
+        }
+        Insert: {
+          age?: number | null
+          contact_number?: string | null
+          created_at?: string
+          diagnosis?: string | null
+          doctor_id: string
+          full_name: string
+          gender?: string | null
+          id?: string
+          notes?: string | null
+        }
+        Update: {
+          age?: number | null
+          contact_number?: string | null
+          created_at?: string
+          diagnosis?: string | null
+          doctor_id?: string
+          full_name?: string
+          gender?: string | null
+          id?: string
+          notes?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          address: string | null
+          bio: string | null
+          created_at: string
+          date_of_birth: string | null
+          department: string | null
+          email: string
+          experience_years: number | null
+          full_name: string
+          id: string
+          license_number: string | null
+          phone: string | null
+          qualification: string | null
+          role: string
+          specialization: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          bio?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          department?: string | null
+          email?: string
+          experience_years?: number | null
+          full_name?: string
+          id: string
+          license_number?: string | null
+          phone?: string | null
+          qualification?: string | null
+          role?: string
+          specialization?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          bio?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          department?: string | null
+          email?: string
+          experience_years?: number | null
+          full_name?: string
+          id?: string
+          license_number?: string | null
+          phone?: string | null
+          qualification?: string | null
+          role?: string
+          specialization?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

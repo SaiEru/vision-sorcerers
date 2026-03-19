@@ -25,7 +25,9 @@ const ProtectedRoute = ({ children, allowedRole }: { children: React.ReactNode; 
 
   if (loading) return <div className="flex min-h-screen items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
   if (!user) return <Navigate to="/login" replace />;
-  if (allowedRole && profile?.role !== allowedRole) return <Navigate to="/login" replace />;
+  // If profile hasn't loaded yet but user exists, show loading
+  if (!profile) return <div className="flex min-h-screen items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
+  if (allowedRole && profile.role !== allowedRole) return <Navigate to="/login" replace />;
 
   return <>{children}</>;
 };
@@ -37,8 +39,8 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={user ? <Navigate to={profile?.role === "admin" ? "/admin/dashboard" : "/doctor/dashboard"} replace /> : <LoginPage />} />
-      <Route path="/" element={user ? <Navigate to={profile?.role === "admin" ? "/admin/dashboard" : "/doctor/dashboard"} replace /> : <SplashPage />} />
+      <Route path="/login" element={user && profile ? <Navigate to={profile.role === "admin" ? "/admin/dashboard" : "/doctor/dashboard"} replace /> : <LoginPage />} />
+      <Route path="/" element={user && profile ? <Navigate to={profile.role === "admin" ? "/admin/dashboard" : "/doctor/dashboard"} replace /> : <SplashPage />} />
 
       {/* Admin routes */}
       <Route path="/admin/dashboard" element={<ProtectedRoute allowedRole="admin"><AdminDashboardPage /></ProtectedRoute>} />

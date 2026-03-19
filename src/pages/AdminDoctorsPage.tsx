@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/lib/supabaseDb";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -52,7 +53,7 @@ const AdminDoctorsPage = () => {
   const { toast } = useToast();
 
   const loadDoctors = async () => {
-    const { data } = await supabase.from("profiles").select("*").eq("role", "doctor").order("created_at", { ascending: false });
+    const { data } = await db.from("profiles").select("*").eq("role", "doctor").order("created_at", { ascending: false });
     setDoctors((data as Doctor[]) || []);
     setLoading(false);
   };

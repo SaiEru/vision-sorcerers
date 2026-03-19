@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect, useMemo } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/lib/supabaseDb";
 import { useAuth } from "@/contexts/AuthContext";
 import { Loader2 } from "lucide-react";
 import { generatePdfReport } from "@/lib/generatePdfReport";
@@ -31,8 +31,8 @@ const DoctorReportsPage = () => {
     if (!user) return;
     const load = async () => {
       const [{ data: assessData }, { data: patientData }] = await Promise.all([
-        supabase.from("assessments").select("*").eq("doctor_id", user.id).order("created_at", { ascending: false }),
-        supabase.from("patients").select("*").eq("doctor_id", user.id),
+        db.from("assessments").select("*").eq("doctor_id", user.id).order("created_at", { ascending: false }),
+        db.from("patients").select("*").eq("doctor_id", user.id),
       ]);
       setAssessments(assessData || []);
       const pMap: Record<string, any> = {};

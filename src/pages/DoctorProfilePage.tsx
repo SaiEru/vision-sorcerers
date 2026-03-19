@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/lib/supabaseDb";
 import { useState } from "react";
 import { Stethoscope, Mail, Phone, Hash, Shield, Calendar, MapPin, GraduationCap, Clock, Building, FileText, Pencil, Save, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -31,7 +31,7 @@ const DoctorProfilePage = () => {
 
   const startEdit = async () => {
     // Fetch fresh profile data including new columns
-    const { data } = await supabase.from("profiles").select("*").eq("id", profile.id).single();
+    const { data } = await db.from("profiles").select("*").eq("id", profile.id).single();
     const d = data as any;
     setForm({
       full_name: d?.full_name || "",
@@ -50,7 +50,7 @@ const DoctorProfilePage = () => {
 
   const handleSave = async () => {
     setSaving(true);
-    const { error } = await supabase.from("profiles").update({
+    const { error } = await db.from("profiles").update({
       full_name: form.full_name,
       phone: form.phone,
       specialization: form.specialization,
@@ -61,7 +61,7 @@ const DoctorProfilePage = () => {
       experience_years: form.experience_years ? parseInt(form.experience_years) : null,
       department: form.department,
       bio: form.bio,
-    } as any).eq("id", profile.id);
+    }).eq("id", profile.id);
     setSaving(false);
 
     if (error) {

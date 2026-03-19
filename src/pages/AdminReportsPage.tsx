@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect, useMemo } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/lib/supabaseDb";
 import { Loader2 } from "lucide-react";
 import { generatePdfReport } from "@/lib/generatePdfReport";
 
@@ -29,8 +29,8 @@ const AdminReportsPage = () => {
   useEffect(() => {
     const load = async () => {
       const [{ data: assessData }, { data: profileData }] = await Promise.all([
-        supabase.from("assessments").select("*").order("created_at", { ascending: false }),
-        supabase.from("profiles").select("*").eq("role", "doctor"),
+        db.from("assessments").select("*").order("created_at", { ascending: false }),
+        db.from("profiles").select("*").eq("role", "doctor"),
       ]);
       setAssessments(assessData || []);
       const map: Record<string, any> = {};
