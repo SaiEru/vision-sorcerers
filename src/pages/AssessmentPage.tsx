@@ -305,13 +305,11 @@ const AssessmentPage = () => {
   if (mode === "uploading") {
     return (
       <AppLayout>
-        <div className="min-h-screen bg-background">
-          {fileInput}
-          <div className="mx-auto max-w-4xl px-6 py-24 text-center">
-            <Loader2 className="mx-auto h-12 w-12 animate-spin text-primary" />
-            <h2 className="mt-6 text-xl font-semibold text-foreground">Processing Medical Report...</h2>
-            <p className="mt-2 text-muted-foreground">AI is extracting clinical values from your report. This may take a moment.</p>
-          </div>
+        {fileInput}
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 py-16 sm:py-24 text-center">
+          <Loader2 className="mx-auto h-12 w-12 animate-spin text-primary" />
+          <h2 className="mt-6 text-xl font-semibold text-foreground">Processing Medical Report...</h2>
+          <p className="mt-2 text-muted-foreground">AI is extracting clinical values from your report. This may take a moment.</p>
         </div>
       </AppLayout>
     );
