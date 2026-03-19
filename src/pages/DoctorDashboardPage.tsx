@@ -43,7 +43,7 @@ const DoctorDashboardPage = () => {
 
   const loadPatients = async () => {
     if (!user) return;
-    const { data } = await supabase
+    const { data } = await db
       .from("patients")
       .select("*")
       .eq("doctor_id", user.id)
