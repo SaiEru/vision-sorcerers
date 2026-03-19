@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/lib/supabaseDb";
 import { useState } from "react";
 import { Stethoscope, Mail, Phone, Hash, Shield, Calendar, MapPin, GraduationCap, Clock, Building, FileText, Pencil, Save, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
