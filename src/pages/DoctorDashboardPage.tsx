@@ -81,7 +81,7 @@ const DoctorDashboardPage = () => {
       return;
     }
     setSubmitting(true);
-    const { error } = await supabase.from("patients").insert({
+    const { error } = await db.from("patients").insert({
       doctor_id: user.id,
       full_name: form.full_name,
       age: form.age ? parseInt(form.age) : null,
