@@ -109,9 +109,9 @@ const AdminDashboardPage = () => {
             <motion.div 
               initial={{ opacity: 0 }} 
               animate={{ opacity: 1 }}
-              className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-xl"
+              className="rounded-2xl border border-border bg-card p-6 shadow-sm"
             >
-              <h3 className="mb-4 text-lg font-semibold text-purple-300">
+              <h3 className="mb-4 text-lg font-semibold text-foreground">
                 Surgery Type Distribution
               </h3>
 
@@ -132,19 +132,19 @@ const AdminDashboardPage = () => {
             <motion.div 
               initial={{ opacity: 0 }} 
               animate={{ opacity: 1 }}
-              className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-xl"
+              className="rounded-2xl border border-border bg-card p-6 shadow-sm"
             >
-              <h3 className="mb-4 text-lg font-semibold text-pink-300">
+              <h3 className="mb-4 text-lg font-semibold text-foreground">
                 Risk Level Distribution
               </h3>
 
               <ResponsiveContainer width="100%" height={260}>
                 <BarChart data={riskData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                  <XAxis dataKey="name" stroke="#aaa" />
-                  <YAxis stroke="#aaa" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
+                  <YAxis stroke="hsl(var(--muted-foreground))" />
                   <Tooltip />
-                  <Bar dataKey="count" fill="#8b5cf6" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="count" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </motion.div>
