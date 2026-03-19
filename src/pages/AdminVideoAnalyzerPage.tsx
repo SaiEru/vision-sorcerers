@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import AppLayout from "@/components/AppLayout";
 import { useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
