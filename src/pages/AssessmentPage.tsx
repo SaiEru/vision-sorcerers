@@ -372,7 +372,7 @@ const AssessmentPage = () => {
           <RiskResultView result={result} onReset={handleReset} data={data} aiExplanation={aiExplanation} aiExplanationCategorized={aiExplanationCategorized} clinicalStepsCategorized={clinicalStepsCategorized} clinicalStepsFlat={clinicalStepsFlat} aiLoading={aiLoading} />
         </div>
       </div>
-    );
+      </AppLayout>
   }
 
   return (
