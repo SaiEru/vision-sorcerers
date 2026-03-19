@@ -74,7 +74,7 @@ const AssessmentPage = () => {
   useEffect(() => {
     if (!patientId || !user) return;
     const loadPatient = async () => {
-      const { data: patient } = await supabase
+      const { data: patient } = await db
         .from("patients")
         .select("*")
         .eq("id", patientId)
