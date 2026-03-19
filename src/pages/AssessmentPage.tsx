@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import Navbar from "@/components/Navbar";
+import AppLayout from "@/components/AppLayout";
 import { Button } from "@/components/ui/button";
 import { FileText, PenLine, ArrowLeft, ArrowRight, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 import { AssessmentData, initialAssessmentData, RiskResult } from "@/types/assessment";
