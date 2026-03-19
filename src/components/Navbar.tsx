@@ -34,7 +34,7 @@ const Navbar = forwardRef<HTMLElement>((_, ref) => {
             <Eye className="h-5 w-5 text-primary-foreground" />
           </div>
           <div>
-            <span className="font-semibold text-foreground">Eye Complication Risk</span>
+            <span className="font-semibold text-foreground">Vision Sorcerers</span>
             <p className="text-xs text-muted-foreground">{isAdmin ? "Admin Panel" : `Dr. ${profile?.full_name || ""}`}</p>
           </div>
         </Link>
