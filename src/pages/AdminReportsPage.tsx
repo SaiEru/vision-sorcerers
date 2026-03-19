@@ -179,8 +179,8 @@ const AdminReportsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <AppLayout>
+      <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-5xl px-6 py-10">
         <h1 className="text-3xl font-bold text-foreground">All Assessment Reports</h1>
         <p className="mt-2 text-muted-foreground">Hospital-wide patient assessment reports with advanced filtering.</p>
