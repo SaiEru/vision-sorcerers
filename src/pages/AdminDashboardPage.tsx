@@ -156,11 +156,11 @@ const AdminDashboardPage = () => {
           <motion.div 
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }}
-            className="mt-10 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-12 text-center shadow-xl"
+            className="mt-10 rounded-2xl border border-border bg-card p-12 text-center shadow-sm"
           >
-            <Camera className="mx-auto h-12 w-12 text-zinc-500" />
-            <h3 className="mt-4 text-lg font-semibold">No assessments yet</h3>
-            <p className="mt-2 text-zinc-400">
+            <Camera className="mx-auto h-12 w-12 text-muted-foreground/40" />
+            <h3 className="mt-4 text-lg font-semibold text-foreground">No assessments yet</h3>
+            <p className="mt-2 text-muted-foreground">
               Assessments will appear here once doctors start adding patients.
             </p>
           </motion.div>
