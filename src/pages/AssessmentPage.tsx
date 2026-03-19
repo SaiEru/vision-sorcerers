@@ -318,8 +318,8 @@ const AssessmentPage = () => {
 
   if (mode === "entry") {
     return (
+      <AppLayout>
       <div className="min-h-screen bg-background">
-        <Navbar />
         {fileInput}
         <div className="mx-auto max-w-4xl px-6 py-12">
           <h1 className="text-3xl font-bold text-foreground">Patient Risk Assessment</h1>
