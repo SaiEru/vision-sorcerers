@@ -372,62 +372,60 @@ const AssessmentPage = () => {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-background">
-        {fileInput}
-        <div className="mx-auto max-w-4xl px-6 py-12">
-          <div className="mb-8 flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => step === 0 ? setMode("entry") : setStep(step - 1)}>
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">Patient Risk Assessment</h1>
-              <p className="text-sm text-muted-foreground">
-                Step {step + 1} of 7 — {stepLabels[step]}
-                {patientName && <> · <span className="text-primary">{patientName}</span></>}
-              </p>
-            </div>
+      {fileInput}
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 py-8 sm:py-12">
+        <div className="mb-8 flex items-center gap-3">
+          <Button variant="ghost" size="icon" onClick={() => step === 0 ? setMode("entry") : setStep(step - 1)}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">Patient Risk Assessment</h1>
+            <p className="text-sm text-muted-foreground">
+              Step {step + 1} of 7 — {stepLabels[step]}
+              {patientName && <> · <span className="text-primary">{patientName}</span></>}
+            </p>
           </div>
-
-          <div className="mb-8 flex items-center gap-1">
-            {stepLabels.map((label, i) => (
-              <div key={label} className="flex flex-1 flex-col items-center gap-1">
-                <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold transition-colors ${
-                  i < step ? "bg-primary text-primary-foreground" : i === step ? "bg-primary text-primary-foreground ring-4 ring-primary/20" : "bg-secondary text-muted-foreground"
-                }`}>
-                  {i < step ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
-                </div>
-                <span className="hidden text-[10px] text-muted-foreground md:block">{label}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="rounded-xl border border-border bg-card p-6 shadow-sm md:p-8">
-            {renderStep()}
-          </div>
-
-          <div className="mt-6 flex items-center justify-between">
-            <Button variant="outline" onClick={() => step === 0 ? setMode("entry") : setStep(step - 1)} className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              {step === 0 ? "Back" : "Previous"}
-            </Button>
-
-            {step < 6 ? (
-              <Button onClick={() => setStep(step + 1)} className="gap-2">
-                Next
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            ) : (
-              <Button onClick={handleAnalyze} className="gap-2 bg-primary shadow-lg shadow-primary/25">
-                <CheckCircle2 className="h-4 w-4" />
-                Analyze Risk
-              </Button>
-            )}
-          </div>
-
-          <footer className="mt-12 border-t border-border pt-6 text-xs text-muted-foreground">
-            <p><strong>Disclaimer:</strong> For demonstration purposes only. Not a medical diagnosis tool.</p>
-          </footer>
         </div>
+
+        <div className="mb-8 flex items-center gap-1">
+          {stepLabels.map((label, i) => (
+            <div key={label} className="flex flex-1 flex-col items-center gap-1">
+              <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold transition-colors ${
+                i < step ? "bg-primary text-primary-foreground" : i === step ? "bg-primary text-primary-foreground ring-4 ring-primary/20" : "bg-secondary text-muted-foreground"
+              }`}>
+                {i < step ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
+              </div>
+              <span className="hidden text-[10px] text-muted-foreground md:block">{label}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="glass-card glow-border p-5 sm:p-8">
+          {renderStep()}
+        </div>
+
+        <div className="mt-6 flex items-center justify-between">
+          <Button variant="outline" onClick={() => step === 0 ? setMode("entry") : setStep(step - 1)} className="gap-2 border-border">
+            <ArrowLeft className="h-4 w-4" />
+            {step === 0 ? "Back" : "Previous"}
+          </Button>
+
+          {step < 6 ? (
+            <Button onClick={() => setStep(step + 1)} className="gap-2 shadow-[0_0_20px_hsl(221_83%_53%/0.2)]">
+              Next
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          ) : (
+            <Button onClick={handleAnalyze} className="gap-2 bg-primary shadow-[0_0_25px_hsl(221_83%_53%/0.3)]">
+              <CheckCircle2 className="h-4 w-4" />
+              Analyze Risk
+            </Button>
+          )}
+        </div>
+
+        <footer className="mt-12 border-t border-border pt-6 text-xs text-muted-foreground">
+          <p><strong>Disclaimer:</strong> For demonstration purposes only. Not a medical diagnosis tool.</p>
+        </footer>
       </div>
     </AppLayout>
   );
