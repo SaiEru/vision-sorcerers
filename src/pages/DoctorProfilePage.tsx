@@ -31,7 +31,7 @@ const DoctorProfilePage = () => {
 
   const startEdit = async () => {
     // Fetch fresh profile data including new columns
-    const { data } = await supabase.from("profiles").select("*").eq("id", profile.id).single();
+    const { data } = await db.from("profiles").select("*").eq("id", profile.id).single();
     const d = data as any;
     setForm({
       full_name: d?.full_name || "",
