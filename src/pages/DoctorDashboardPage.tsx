@@ -54,7 +54,7 @@ const DoctorDashboardPage = () => {
 
   const loadAssessmentCounts = async () => {
     if (!user) return;
-    const { data } = await supabase
+    const { data } = await db
       .from("assessments")
       .select("id, patient_id")
       .eq("doctor_id", user.id);
