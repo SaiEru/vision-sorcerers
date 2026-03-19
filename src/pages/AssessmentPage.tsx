@@ -434,6 +434,7 @@ const AssessmentPage = () => {
         </footer>
       </div>
     </div>
+    </AppLayout>
   );
 };
 
