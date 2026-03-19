@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import AppLayout from "@/components/AppLayout";
 import { Activity, AlertTriangle, TrendingUp, Camera, Users, Stethoscope } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -60,19 +60,19 @@ const AdminDashboardPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black text-white">
-      <Navbar />
+    <AppLayout>
+      <div className="min-h-screen bg-background">
 
       <div className="mx-auto max-w-7xl px-6 py-10">
         <motion.h1 
           initial={{ opacity: 0, y: -20 }} 
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent"
+          className="text-4xl font-bold text-foreground"
         >
           Hospital Analytics Dashboard
         </motion.h1>
 
-        <p className="mt-2 text-zinc-400">
+        <p className="mt-2 text-muted-foreground">
           Overview of all doctors, patients, and assessments.
         </p>
 
@@ -84,19 +84,17 @@ const AdminDashboardPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              whileHover={{ scale: 1.05 }}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-lg hover:shadow-2xl"
+              whileHover={{ scale: 1.03 }}
+              className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-sm hover:shadow-lg transition-shadow"
             >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-gradient-to-r from-purple-500/20 to-pink-500/20 blur-xl" />
-
               <div className="flex items-center justify-between relative z-10">
                 <div>
-                  <p className="text-sm text-zinc-400">{s.label}</p>
-                  <p className="mt-2 text-3xl font-bold">{s.value}</p>
+                  <p className="text-sm text-muted-foreground">{s.label}</p>
+                  <p className="mt-2 text-3xl font-bold text-foreground">{s.value}</p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/20">
-                  <s.icon className="h-6 w-6 text-purple-400" />
+                <div className="p-3 rounded-xl bg-primary/10">
+                  <s.icon className="h-6 w-6 text-primary" />
                 </div>
               </div>
             </motion.div>
@@ -109,9 +107,9 @@ const AdminDashboardPage = () => {
             <motion.div 
               initial={{ opacity: 0 }} 
               animate={{ opacity: 1 }}
-              className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-xl"
+              className="rounded-2xl border border-border bg-card p-6 shadow-sm"
             >
-              <h3 className="mb-4 text-lg font-semibold text-purple-300">
+              <h3 className="mb-4 text-lg font-semibold text-foreground">
                 Surgery Type Distribution
               </h3>
 
@@ -132,19 +130,19 @@ const AdminDashboardPage = () => {
             <motion.div 
               initial={{ opacity: 0 }} 
               animate={{ opacity: 1 }}
-              className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-xl"
+              className="rounded-2xl border border-border bg-card p-6 shadow-sm"
             >
-              <h3 className="mb-4 text-lg font-semibold text-pink-300">
+              <h3 className="mb-4 text-lg font-semibold text-foreground">
                 Risk Level Distribution
               </h3>
 
               <ResponsiveContainer width="100%" height={260}>
                 <BarChart data={riskData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                  <XAxis dataKey="name" stroke="#aaa" />
-                  <YAxis stroke="#aaa" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
+                  <YAxis stroke="hsl(var(--muted-foreground))" />
                   <Tooltip />
-                  <Bar dataKey="count" fill="#8b5cf6" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="count" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </motion.div>
@@ -156,17 +154,18 @@ const AdminDashboardPage = () => {
           <motion.div 
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }}
-            className="mt-10 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-12 text-center shadow-xl"
+            className="mt-10 rounded-2xl border border-border bg-card p-12 text-center shadow-sm"
           >
-            <Camera className="mx-auto h-12 w-12 text-zinc-500" />
-            <h3 className="mt-4 text-lg font-semibold">No assessments yet</h3>
-            <p className="mt-2 text-zinc-400">
+            <Camera className="mx-auto h-12 w-12 text-muted-foreground/40" />
+            <h3 className="mt-4 text-lg font-semibold text-foreground">No assessments yet</h3>
+            <p className="mt-2 text-muted-foreground">
               Assessments will appear here once doctors start adding patients.
             </p>
           </motion.div>
         )}
       </div>
-    </div>
+      </div>
+    </AppLayout>
   );
 };
 

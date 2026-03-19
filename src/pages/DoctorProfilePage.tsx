@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import AppLayout from "@/components/AppLayout";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/lib/supabaseDb";
 import { useState } from "react";
@@ -83,8 +83,8 @@ const DoctorProfilePage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <AppLayout>
+      <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-2xl px-6 py-10">
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -176,7 +176,8 @@ const DoctorProfilePage = () => {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </AppLayout>
   );
 };
 

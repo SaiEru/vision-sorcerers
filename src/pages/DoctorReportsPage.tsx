@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import AppLayout from "@/components/AppLayout";
 import { FileText, Search, Calendar, ChevronDown, ChevronUp, User, Brain, Download, Filter, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -107,8 +107,8 @@ const DoctorReportsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <AppLayout>
+      <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-5xl px-6 py-10">
         <h1 className="text-3xl font-bold text-foreground">My Assessment Reports</h1>
         <p className="mt-2 text-muted-foreground">Click on a report to view full details. Use filters to narrow results.</p>
@@ -312,7 +312,8 @@ const DoctorReportsPage = () => {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </AppLayout>
   );
 };
 
