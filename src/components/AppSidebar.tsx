@@ -3,16 +3,8 @@ import { useLocation } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/contexts/AuthContext";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarFooter,
-  useSidebar,
+  Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
+  SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarFooter, useSidebar,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 
@@ -40,11 +32,11 @@ export function AppSidebar() {
   const items = isAdmin ? adminItems : doctorItems;
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="border-r border-border bg-sidebar">
       <SidebarContent>
         {/* Logo */}
         <div className={`flex items-center gap-3 px-4 py-5 ${collapsed ? "justify-center" : ""}`}>
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary">
+          <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary shadow-[0_0_15px_hsl(221_83%_53%/0.3)]">
             <Eye className="h-5 w-5 text-primary-foreground" />
           </div>
           {!collapsed && (
@@ -56,7 +48,7 @@ export function AppSidebar() {
         </div>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-muted-foreground/60 text-[10px] uppercase tracking-wider">Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -65,8 +57,8 @@ export function AppSidebar() {
                     <NavLink
                       to={item.url}
                       end
-                      className="hover:bg-muted/50"
-                      activeClassName="bg-primary/10 text-primary font-medium"
+                      className="hover:bg-primary/10 transition-colors"
+                      activeClassName="bg-primary/15 text-primary font-medium shadow-[inset_0_0_15px_hsl(221_83%_53%/0.08)]"
                     >
                       <item.icon className="mr-2 h-4 w-4" />
                       {!collapsed && <span>{item.title}</span>}
@@ -83,7 +75,7 @@ export function AppSidebar() {
         <Button
           variant="ghost"
           size="sm"
-          className={`w-full gap-2 text-muted-foreground hover:text-foreground ${collapsed ? "justify-center px-0" : "justify-start"}`}
+          className={`w-full gap-2 text-muted-foreground hover:text-foreground hover:bg-destructive/10 ${collapsed ? "justify-center px-0" : "justify-start"}`}
           onClick={signOut}
         >
           <LogOut className="h-4 w-4 shrink-0" />

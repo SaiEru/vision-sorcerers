@@ -305,13 +305,11 @@ const AssessmentPage = () => {
   if (mode === "uploading") {
     return (
       <AppLayout>
-        <div className="min-h-screen bg-background">
-          {fileInput}
-          <div className="mx-auto max-w-4xl px-6 py-24 text-center">
-            <Loader2 className="mx-auto h-12 w-12 animate-spin text-primary" />
-            <h2 className="mt-6 text-xl font-semibold text-foreground">Processing Medical Report...</h2>
-            <p className="mt-2 text-muted-foreground">AI is extracting clinical values from your report. This may take a moment.</p>
-          </div>
+        {fileInput}
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 py-16 sm:py-24 text-center">
+          <Loader2 className="mx-auto h-12 w-12 animate-spin text-primary" />
+          <h2 className="mt-6 text-xl font-semibold text-foreground">Processing Medical Report...</h2>
+          <p className="mt-2 text-muted-foreground">AI is extracting clinical values from your report. This may take a moment.</p>
         </div>
       </AppLayout>
     );
@@ -320,47 +318,42 @@ const AssessmentPage = () => {
   if (mode === "entry") {
     return (
       <AppLayout>
-        <div className="min-h-screen bg-background">
-          {fileInput}
-          <div className="mx-auto max-w-4xl px-6 py-12">
-            <h1 className="text-3xl font-bold text-foreground">Patient Risk Assessment</h1>
-            {patientName && (
-              <p className="mt-1 text-lg text-primary font-medium">Patient: {patientName}</p>
-            )}
-            <p className="mt-2 text-muted-foreground">Choose how you'd like to enter clinical data.</p>
+        {fileInput}
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 py-8 sm:py-12">
+          <h1 className="text-3xl font-bold text-foreground">Patient Risk Assessment</h1>
+          {patientName && <p className="mt-1 text-lg text-primary font-medium">Patient: {patientName}</p>}
+          <p className="mt-2 text-muted-foreground">Choose how you'd like to enter clinical data.</p>
 
-            {uploadError && (
-              <div className="mt-4 flex items-center gap-3 rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-                <AlertCircle className="h-5 w-5 shrink-0" />
-                {uploadError}
-              </div>
-            )}
-
-            <div className="mt-10 grid gap-6 md:grid-cols-2">
-              <button onClick={handleUploadClick} className="group rounded-xl border border-border bg-card p-8 text-center shadow-sm transition-all hover:border-primary/30 hover:shadow-md">
-                <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-                  <FileText className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground">Upload Medical Report</h3>
-                <p className="mt-2 text-sm text-muted-foreground">Upload a PDF or image-based post-operative report. AI will extract clinical values and pre-fill the form.</p>
-                <p className="mt-4 text-xs text-muted-foreground">Supports PDF, JPEG, PNG</p>
-              </button>
-
-              <button onClick={() => setMode("form")} className="group rounded-xl border border-border bg-card p-8 text-center shadow-sm transition-all hover:border-primary/30 hover:shadow-md">
-                <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-                  <PenLine className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground">Manual Data Entry</h3>
-                <p className="mt-2 text-sm text-muted-foreground">Enter all clinical data manually using the step-by-step assessment form.</p>
-                <p className="mt-4 text-xs text-muted-foreground">7 assessment steps</p>
-              </button>
+          {uploadError && (
+            <div className="mt-4 flex items-center gap-3 rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
+              <AlertCircle className="h-5 w-5 shrink-0" />{uploadError}
             </div>
+          )}
 
-            <footer className="mt-16 flex flex-wrap items-center justify-between border-t border-border pt-6 text-xs text-muted-foreground">
-              <p><strong>Disclaimer:</strong> For demonstration purposes only. Not a medical diagnosis tool.</p>
-              <p>Built using AI &amp; Machine Learning concepts</p>
-            </footer>
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            <button onClick={handleUploadClick} className="group glass-card glow-border p-8 text-center transition-all hover:border-primary/40 hover:shadow-[0_0_30px_hsl(221_83%_53%/0.1)]">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+                <FileText className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">Upload Medical Report</h3>
+              <p className="mt-2 text-sm text-muted-foreground">Upload a PDF or image-based post-operative report. AI will extract clinical values and pre-fill the form.</p>
+              <p className="mt-4 text-xs text-muted-foreground">Supports PDF, JPEG, PNG</p>
+            </button>
+
+            <button onClick={() => setMode("form")} className="group glass-card glow-border p-8 text-center transition-all hover:border-primary/40 hover:shadow-[0_0_30px_hsl(221_83%_53%/0.1)]">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+                <PenLine className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">Manual Data Entry</h3>
+              <p className="mt-2 text-sm text-muted-foreground">Enter all clinical data manually using the step-by-step assessment form.</p>
+              <p className="mt-4 text-xs text-muted-foreground">7 assessment steps</p>
+            </button>
           </div>
+
+          <footer className="mt-16 flex flex-wrap items-center justify-between border-t border-border pt-6 text-xs text-muted-foreground">
+            <p><strong>Disclaimer:</strong> For demonstration purposes only. Not a medical diagnosis tool.</p>
+            <p>Built using AI &amp; Machine Learning concepts</p>
+          </footer>
         </div>
       </AppLayout>
     );
@@ -369,11 +362,9 @@ const AssessmentPage = () => {
   if (mode === "result" && result) {
     return (
       <AppLayout>
-        <div className="min-h-screen bg-background">
-          <div className="mx-auto max-w-4xl px-6 py-12">
-            <h1 className="mb-8 text-3xl font-bold text-foreground">Risk Assessment Results</h1>
-            <RiskResultView result={result} onReset={handleReset} data={data} aiExplanation={aiExplanation} aiExplanationCategorized={aiExplanationCategorized} clinicalStepsCategorized={clinicalStepsCategorized} clinicalStepsFlat={clinicalStepsFlat} aiLoading={aiLoading} />
-          </div>
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 py-8 sm:py-12">
+          <h1 className="mb-8 text-3xl font-bold text-foreground">Risk Assessment Results</h1>
+          <RiskResultView result={result} onReset={handleReset} data={data} aiExplanation={aiExplanation} aiExplanationCategorized={aiExplanationCategorized} clinicalStepsCategorized={clinicalStepsCategorized} clinicalStepsFlat={clinicalStepsFlat} aiLoading={aiLoading} />
         </div>
       </AppLayout>
     );
@@ -381,62 +372,60 @@ const AssessmentPage = () => {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-background">
-        {fileInput}
-        <div className="mx-auto max-w-4xl px-6 py-12">
-          <div className="mb-8 flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => step === 0 ? setMode("entry") : setStep(step - 1)}>
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">Patient Risk Assessment</h1>
-              <p className="text-sm text-muted-foreground">
-                Step {step + 1} of 7 — {stepLabels[step]}
-                {patientName && <> · <span className="text-primary">{patientName}</span></>}
-              </p>
-            </div>
+      {fileInput}
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 py-8 sm:py-12">
+        <div className="mb-8 flex items-center gap-3">
+          <Button variant="ghost" size="icon" onClick={() => step === 0 ? setMode("entry") : setStep(step - 1)}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">Patient Risk Assessment</h1>
+            <p className="text-sm text-muted-foreground">
+              Step {step + 1} of 7 — {stepLabels[step]}
+              {patientName && <> · <span className="text-primary">{patientName}</span></>}
+            </p>
           </div>
-
-          <div className="mb-8 flex items-center gap-1">
-            {stepLabels.map((label, i) => (
-              <div key={label} className="flex flex-1 flex-col items-center gap-1">
-                <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold transition-colors ${
-                  i < step ? "bg-primary text-primary-foreground" : i === step ? "bg-primary text-primary-foreground ring-4 ring-primary/20" : "bg-secondary text-muted-foreground"
-                }`}>
-                  {i < step ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
-                </div>
-                <span className="hidden text-[10px] text-muted-foreground md:block">{label}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="rounded-xl border border-border bg-card p-6 shadow-sm md:p-8">
-            {renderStep()}
-          </div>
-
-          <div className="mt-6 flex items-center justify-between">
-            <Button variant="outline" onClick={() => step === 0 ? setMode("entry") : setStep(step - 1)} className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              {step === 0 ? "Back" : "Previous"}
-            </Button>
-
-            {step < 6 ? (
-              <Button onClick={() => setStep(step + 1)} className="gap-2">
-                Next
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            ) : (
-              <Button onClick={handleAnalyze} className="gap-2 bg-primary shadow-lg shadow-primary/25">
-                <CheckCircle2 className="h-4 w-4" />
-                Analyze Risk
-              </Button>
-            )}
-          </div>
-
-          <footer className="mt-12 border-t border-border pt-6 text-xs text-muted-foreground">
-            <p><strong>Disclaimer:</strong> For demonstration purposes only. Not a medical diagnosis tool.</p>
-          </footer>
         </div>
+
+        <div className="mb-8 flex items-center gap-1">
+          {stepLabels.map((label, i) => (
+            <div key={label} className="flex flex-1 flex-col items-center gap-1">
+              <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold transition-colors ${
+                i < step ? "bg-primary text-primary-foreground" : i === step ? "bg-primary text-primary-foreground ring-4 ring-primary/20" : "bg-secondary text-muted-foreground"
+              }`}>
+                {i < step ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
+              </div>
+              <span className="hidden text-[10px] text-muted-foreground md:block">{label}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="glass-card glow-border p-5 sm:p-8">
+          {renderStep()}
+        </div>
+
+        <div className="mt-6 flex items-center justify-between">
+          <Button variant="outline" onClick={() => step === 0 ? setMode("entry") : setStep(step - 1)} className="gap-2 border-border">
+            <ArrowLeft className="h-4 w-4" />
+            {step === 0 ? "Back" : "Previous"}
+          </Button>
+
+          {step < 6 ? (
+            <Button onClick={() => setStep(step + 1)} className="gap-2 shadow-[0_0_20px_hsl(221_83%_53%/0.2)]">
+              Next
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          ) : (
+            <Button onClick={handleAnalyze} className="gap-2 bg-primary shadow-[0_0_25px_hsl(221_83%_53%/0.3)]">
+              <CheckCircle2 className="h-4 w-4" />
+              Analyze Risk
+            </Button>
+          )}
+        </div>
+
+        <footer className="mt-12 border-t border-border pt-6 text-xs text-muted-foreground">
+          <p><strong>Disclaimer:</strong> For demonstration purposes only. Not a medical diagnosis tool.</p>
+        </footer>
       </div>
     </AppLayout>
   );

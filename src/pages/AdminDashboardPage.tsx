@@ -42,7 +42,7 @@ const AdminDashboardPage = () => {
 
   const pieData = Object.entries(surgeryBreakdown).map(([name, value], i) => ({
     name, value,
-    color: ["#6366f1", "#22c55e", "#f59e0b", "#ef4444"][i % 4],
+    color: ["hsl(221, 83%, 53%)", "hsl(142, 71%, 45%)", "hsl(38, 92%, 50%)", "hsl(0, 84%, 60%)"][i % 4],
   }));
 
   const riskBreakdown = assessments.reduce((acc: Record<string, number>, a: any) => {
@@ -53,48 +53,49 @@ const AdminDashboardPage = () => {
   const riskData = Object.entries(riskBreakdown).map(([name, count]) => ({ name, count }));
 
   const statCards = [
-    { label: "Total Doctors", value: stats.totalDoctors.toString(), icon: Stethoscope },
-    { label: "Total Patients", value: stats.totalPatients.toString(), icon: Users },
-    { label: "Total Assessments", value: stats.totalAssessments.toString(), icon: Activity },
-    { label: "High-Risk Cases", value: stats.highRiskCount.toString(), icon: AlertTriangle },
+    { label: "Total Doctors", value: stats.totalDoctors.toString(), icon: Stethoscope, color: "from-primary/20 to-primary/5" },
+    { label: "Total Patients", value: stats.totalPatients.toString(), icon: Users, color: "from-emerald-500/20 to-emerald-500/5" },
+    { label: "Total Assessments", value: stats.totalAssessments.toString(), icon: Activity, color: "from-amber-500/20 to-amber-500/5" },
+    { label: "High-Risk Cases", value: stats.highRiskCount.toString(), icon: AlertTriangle, color: "from-destructive/20 to-destructive/5" },
   ];
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-background">
-
-      <div className="mx-auto max-w-7xl px-6 py-10">
-        <motion.h1 
-          initial={{ opacity: 0, y: -20 }} 
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 sm:py-10">
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl font-bold text-foreground"
+          className="text-3xl sm:text-4xl font-bold text-foreground"
         >
           Hospital Analytics Dashboard
         </motion.h1>
-
-        <p className="mt-2 text-muted-foreground">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="mt-2 text-muted-foreground"
+        >
           Overview of all doctors, patients, and assessments.
-        </p>
+        </motion.p>
 
         {/* STAT CARDS */}
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-4">
           {statCards.map((s, i) => (
             <motion.div
               key={s.label}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              whileHover={{ scale: 1.03 }}
-              className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-sm hover:shadow-lg transition-shadow"
+              whileHover={{ scale: 1.03, y: -2 }}
+              className="glass-card glow-border p-5 sm:p-6"
             >
-              <div className="flex items-center justify-between relative z-10">
+              <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">{s.label}</p>
-                  <p className="mt-2 text-3xl font-bold text-foreground">{s.value}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">{s.label}</p>
+                  <p className="mt-2 text-2xl sm:text-3xl font-bold text-foreground">{s.value}</p>
                 </div>
-
-                <div className="p-3 rounded-xl bg-primary/10">
-                  <s.icon className="h-6 w-6 text-primary" />
+                <div className={`p-3 rounded-xl bg-gradient-to-br ${s.color}`}>
+                  <s.icon className="h-5 w-5 sm:h-6 sm:w-6 text-foreground" />
                 </div>
               </div>
             </motion.div>
@@ -102,47 +103,47 @@ const AdminDashboardPage = () => {
         </div>
 
         {/* CHARTS */}
-        <div className="mt-10 grid gap-8 lg:grid-cols-2">
+        <div className="mt-8 sm:mt-10 grid gap-6 sm:gap-8 lg:grid-cols-2">
           {pieData.length > 0 && (
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }}
-              className="rounded-2xl border border-border bg-card p-6 shadow-sm"
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="glass-card glow-border p-6"
             >
-              <h3 className="mb-4 text-lg font-semibold text-foreground">
-                Surgery Type Distribution
-              </h3>
-
+              <h3 className="mb-4 text-lg font-semibold text-foreground">Surgery Type Distribution</h3>
               <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
-                  <Pie data={pieData} cx="50%" cy="50%" innerRadius={60} outerRadius={90} dataKey="value">
+                  <Pie data={pieData} cx="50%" cy="50%" innerRadius={60} outerRadius={90} dataKey="value" stroke="none">
                     {pieData.map((entry, i) => (
                       <Cell key={i} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: "hsl(222, 47%, 11%)", border: "1px solid hsl(222, 30%, 18%)", borderRadius: "8px", color: "hsl(210, 40%, 96%)" }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
             </motion.div>
           )}
 
           {riskData.length > 0 && (
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }}
-              className="rounded-2xl border border-border bg-card p-6 shadow-sm"
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              className="glass-card glow-border p-6"
             >
-              <h3 className="mb-4 text-lg font-semibold text-foreground">
-                Risk Level Distribution
-              </h3>
-
+              <h3 className="mb-4 text-lg font-semibold text-foreground">Risk Level Distribution</h3>
               <ResponsiveContainer width="100%" height={260}>
                 <BarChart data={riskData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                  <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
-                  <YAxis stroke="hsl(var(--muted-foreground))" />
-                  <Tooltip />
-                  <Bar dataKey="count" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(222, 30%, 18%)" />
+                  <XAxis dataKey="name" stroke="hsl(215, 20%, 55%)" fontSize={12} />
+                  <YAxis stroke="hsl(215, 20%, 55%)" fontSize={12} />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: "hsl(222, 47%, 11%)", border: "1px solid hsl(222, 30%, 18%)", borderRadius: "8px", color: "hsl(210, 40%, 96%)" }}
+                  />
+                  <Bar dataKey="count" fill="hsl(221, 83%, 53%)" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </motion.div>
@@ -151,10 +152,10 @@ const AdminDashboardPage = () => {
 
         {/* EMPTY STATE */}
         {assessments.length === 0 && (
-          <motion.div 
-            initial={{ opacity: 0 }} 
+          <motion.div
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="mt-10 rounded-2xl border border-border bg-card p-12 text-center shadow-sm"
+            className="mt-10 glass-card glow-border p-12 text-center"
           >
             <Camera className="mx-auto h-12 w-12 text-muted-foreground/40" />
             <h3 className="mt-4 text-lg font-semibold text-foreground">No assessments yet</h3>
@@ -163,7 +164,6 @@ const AdminDashboardPage = () => {
             </p>
           </motion.div>
         )}
-      </div>
       </div>
     </AppLayout>
   );

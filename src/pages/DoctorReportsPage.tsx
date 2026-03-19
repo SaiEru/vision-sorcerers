@@ -108,8 +108,7 @@ const DoctorReportsPage = () => {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-5xl px-6 py-10">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 py-8 sm:py-10">
         <h1 className="text-3xl font-bold text-foreground">My Assessment Reports</h1>
         <p className="mt-2 text-muted-foreground">Click on a report to view full details. Use filters to narrow results.</p>
 
@@ -150,7 +149,7 @@ const DoctorReportsPage = () => {
         {loading ? (
           <div className="mt-12 flex justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>
         ) : filtered.length === 0 ? (
-          <div className="mt-8 rounded-xl border border-border bg-card p-12 text-center shadow-sm">
+          <div className="mt-8 glass-card glow-border p-12 text-center">
             <FileText className="mx-auto h-12 w-12 text-muted-foreground/40" />
             <h3 className="mt-4 text-lg font-semibold text-foreground">No reports found</h3>
             <p className="mt-2 text-muted-foreground">Try adjusting your filters or complete an assessment.</p>
@@ -165,7 +164,7 @@ const DoctorReportsPage = () => {
               const clinicalSteps = a.clinical_steps ? a.clinical_steps.split("\n").filter(Boolean) : [];
 
               return (
-                <div key={a.id} className="rounded-xl border border-border bg-card shadow-sm overflow-hidden transition-all">
+                <div key={a.id} className="glass-card glow-border overflow-hidden transition-all">
                   <button onClick={() => setExpandedId(isExpanded ? null : a.id)} className="w-full flex items-center justify-between p-5 text-left hover:bg-muted/30 transition-colors">
                     <div className="flex items-start gap-4">
                       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
@@ -311,7 +310,6 @@ const DoctorReportsPage = () => {
             })}
           </div>
         )}
-      </div>
       </div>
     </AppLayout>
   );
