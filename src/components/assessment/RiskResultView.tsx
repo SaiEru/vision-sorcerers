@@ -73,7 +73,7 @@ const RiskResultView = ({
   const downloadTextReport = () => {
     const lines: string[] = [];
     lines.push("═══════════════════════════════════════════════════════");
-    lines.push("     EYE COMPLICATION RISK ASSESSMENT REPORT");
+    lines.push("     VISION SORCERERS — RISK ASSESSMENT REPORT");
     lines.push("═══════════════════════════════════════════════════════");
     lines.push(`Date: ${new Date().toLocaleString()}`);
     lines.push("");
