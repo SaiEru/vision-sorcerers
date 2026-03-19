@@ -5,7 +5,7 @@ import {
   PieChart, Pie, Cell,
 } from "recharts";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/lib/supabaseDb";
 import { motion } from "framer-motion";
 
 const AdminDashboardPage = () => {
