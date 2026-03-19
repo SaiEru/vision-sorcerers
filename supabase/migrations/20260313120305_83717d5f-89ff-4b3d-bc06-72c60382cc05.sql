@@ -1,0 +1,8 @@
+
+ALTER TABLE public.profiles
+ADD COLUMN IF NOT EXISTS date_of_birth date DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS address text DEFAULT '',
+ADD COLUMN IF NOT EXISTS qualification text DEFAULT '',
+ADD COLUMN IF NOT EXISTS experience_years integer DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS department text DEFAULT '',
+ADD COLUMN IF NOT EXISTS bio text DEFAULT '';
