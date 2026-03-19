@@ -164,7 +164,7 @@ const DoctorReportsPage = () => {
               const clinicalSteps = a.clinical_steps ? a.clinical_steps.split("\n").filter(Boolean) : [];
 
               return (
-                <div key={a.id} className="rounded-xl border border-border bg-card shadow-sm overflow-hidden transition-all">
+                <div key={a.id} className="glass-card glow-border overflow-hidden transition-all">
                   <button onClick={() => setExpandedId(isExpanded ? null : a.id)} className="w-full flex items-center justify-between p-5 text-left hover:bg-muted/30 transition-colors">
                     <div className="flex items-start gap-4">
                       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
