@@ -131,7 +131,7 @@ const AssessmentPage = () => {
 
   const saveAssessment = async (assessmentData: AssessmentData, riskResult: RiskResult, explanation: string[] = [], steps: string[] = []) => {
     if (!user) return;
-    await supabase.from("assessments").insert({
+    await db.from("assessments").insert({
       doctor_id: user.id,
       patient_id: patientId || null,
       patient_name: assessmentData.fullName || "Unknown",
@@ -142,7 +142,7 @@ const AssessmentPage = () => {
       status: "Completed",
       risk_explanation: explanation.join("\n"),
       clinical_steps: steps.join("\n"),
-    } as any);
+    });
   };
 
   const handleChange = (partial: Partial<AssessmentData>) => {

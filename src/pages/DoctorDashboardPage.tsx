@@ -104,7 +104,7 @@ const DoctorDashboardPage = () => {
   const handleViewPatient = async (patient: Patient) => {
     setDetailPatient(patient);
     setLoadingAssessments(true);
-    const { data } = await supabase
+    const { data } = await db
       .from("assessments")
       .select("*")
       .eq("doctor_id", user!.id)

@@ -53,7 +53,7 @@ const AdminDoctorsPage = () => {
   const { toast } = useToast();
 
   const loadDoctors = async () => {
-    const { data } = await supabase.from("profiles").select("*").eq("role", "doctor").order("created_at", { ascending: false });
+    const { data } = await db.from("profiles").select("*").eq("role", "doctor").order("created_at", { ascending: false });
     setDoctors((data as Doctor[]) || []);
     setLoading(false);
   };

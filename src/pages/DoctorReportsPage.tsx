@@ -31,8 +31,8 @@ const DoctorReportsPage = () => {
     if (!user) return;
     const load = async () => {
       const [{ data: assessData }, { data: patientData }] = await Promise.all([
-        supabase.from("assessments").select("*").eq("doctor_id", user.id).order("created_at", { ascending: false }),
-        supabase.from("patients").select("*").eq("doctor_id", user.id),
+        db.from("assessments").select("*").eq("doctor_id", user.id).order("created_at", { ascending: false }),
+        db.from("patients").select("*").eq("doctor_id", user.id),
       ]);
       setAssessments(assessData || []);
       const pMap: Record<string, any> = {};

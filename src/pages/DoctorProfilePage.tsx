@@ -50,7 +50,7 @@ const DoctorProfilePage = () => {
 
   const handleSave = async () => {
     setSaving(true);
-    const { error } = await supabase.from("profiles").update({
+    const { error } = await db.from("profiles").update({
       full_name: form.full_name,
       phone: form.phone,
       specialization: form.specialization,
@@ -61,7 +61,7 @@ const DoctorProfilePage = () => {
       experience_years: form.experience_years ? parseInt(form.experience_years) : null,
       department: form.department,
       bio: form.bio,
-    } as any).eq("id", profile.id);
+    }).eq("id", profile.id);
     setSaving(false);
 
     if (error) {

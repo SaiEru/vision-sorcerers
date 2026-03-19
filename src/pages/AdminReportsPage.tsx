@@ -29,8 +29,8 @@ const AdminReportsPage = () => {
   useEffect(() => {
     const load = async () => {
       const [{ data: assessData }, { data: profileData }] = await Promise.all([
-        supabase.from("assessments").select("*").order("created_at", { ascending: false }),
-        supabase.from("profiles").select("*").eq("role", "doctor"),
+        db.from("assessments").select("*").order("created_at", { ascending: false }),
+        db.from("profiles").select("*").eq("role", "doctor"),
       ]);
       setAssessments(assessData || []);
       const map: Record<string, any> = {};
