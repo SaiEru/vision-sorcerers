@@ -311,7 +311,6 @@ const DoctorReportsPage = () => {
           </div>
         )}
       </div>
-      </div>
     </AppLayout>
   );
 };
