@@ -23,51 +23,79 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const fallbackProfile = (user: User, role: "admin" | "doctor"): Profile => ({
+  id: user.id,
+  email: user.email || "",
+  full_name: (user.user_metadata?.full_name as string) || "",
+  role,
+  specialization: "",
+  phone: "",
+  license_number: "",
+});
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchProfile = async (userId: string) => {
-    const { data } = await db
-      .from("profiles")
-      .select("*")
-      .eq("id", userId)
-      .single();
-    if (data) setProfile(data as Profile);
-    return data;
+  const fetchProfile = async (authUser: User) => {
+    const [profileRes, roleRes] = await Promise.all([
+      db.from("profiles").select("*").eq("id", authUser.id).maybeSingle(),
+      db.from("user_roles").select("role").eq("user_id", authUser.id),
+    ]);
+
+    const role: "admin" | "doctor" = (roleRes.data || []).some((r: any) => r.role === "admin") ? "admin" : "doctor";
+
+    const mergedProfile: Profile = profileRes.data
+      ? ({ ...(profileRes.data as Record<string, unknown>), role } as Profile)
+      : fallbackProfile(authUser, role);
+
+    setProfile(mergedProfile);
+    return mergedProfile;
   };
 
   useEffect(() => {
-    // Get initial session first
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        await fetchProfile(session.user.id);
-      }
-      setLoading(false);
-    });
+    let mounted = true;
 
-    // Then listen for auth changes (sign in, sign out)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      // Only handle actual auth changes, not the initial session
-      if (event === 'INITIAL_SESSION') return;
-      
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        // Use setTimeout to avoid Supabase deadlock when querying inside callback
-        setLoading(true);
-        setTimeout(async () => {
-          await fetchProfile(session.user.id);
-          setLoading(false);
-        }, 0);
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!mounted) return;
+      const authUser = session?.user ?? null;
+      setUser(authUser);
+
+      if (authUser) {
+        await fetchProfile(authUser);
       } else {
         setProfile(null);
-        setLoading(false);
       }
+
+      if (mounted) setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "INITIAL_SESSION" || event === "TOKEN_REFRESHED") return;
+
+      const authUser = session?.user ?? null;
+      setUser(authUser);
+
+      if (!authUser) {
+        setProfile(null);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      setTimeout(async () => {
+        await fetchProfile(authUser);
+        setLoading(false);
+      }, 0);
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {
@@ -81,11 +109,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setProfile(null);
   };
 
-  return (
-    <AuthContext.Provider value={{ user, profile, loading, signIn, signOut }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, profile, loading, signIn, signOut }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
