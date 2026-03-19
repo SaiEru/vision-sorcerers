@@ -67,12 +67,12 @@ const AdminDashboardPage = () => {
         <motion.h1 
           initial={{ opacity: 0, y: -20 }} 
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent"
+          className="text-4xl font-bold text-foreground"
         >
           Hospital Analytics Dashboard
         </motion.h1>
 
-        <p className="mt-2 text-zinc-400">
+        <p className="mt-2 text-muted-foreground">
           Overview of all doctors, patients, and assessments.
         </p>
 
@@ -84,19 +84,17 @@ const AdminDashboardPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              whileHover={{ scale: 1.05 }}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-lg hover:shadow-2xl"
+              whileHover={{ scale: 1.03 }}
+              className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-sm hover:shadow-lg transition-shadow"
             >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-gradient-to-r from-purple-500/20 to-pink-500/20 blur-xl" />
-
               <div className="flex items-center justify-between relative z-10">
                 <div>
-                  <p className="text-sm text-zinc-400">{s.label}</p>
-                  <p className="mt-2 text-3xl font-bold">{s.value}</p>
+                  <p className="text-sm text-muted-foreground">{s.label}</p>
+                  <p className="mt-2 text-3xl font-bold text-foreground">{s.value}</p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/20">
-                  <s.icon className="h-6 w-6 text-purple-400" />
+                <div className="p-3 rounded-xl bg-primary/10">
+                  <s.icon className="h-6 w-6 text-primary" />
                 </div>
               </div>
             </motion.div>
