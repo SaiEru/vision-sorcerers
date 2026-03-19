@@ -12,7 +12,6 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [seeding, setSeeding] = useState(false);
   const { signIn, user, profile, loading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();

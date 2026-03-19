@@ -14,8 +14,8 @@ const AdminDashboardPage = () => {
 
   useEffect(() => {
     const load = async () => {
-      const [doctorsRes, patientsRes, assessmentsRes] = await Promise.all([
-        db.from("profiles").select("id", { count: "exact" }).eq("role", "doctor"),
+      const [doctorRolesRes, patientsRes, assessmentsRes] = await Promise.all([
+        db.from("user_roles").select("user_id").eq("role", "doctor"),
         db.from("patients").select("id", { count: "exact" }),
         db.from("assessments").select("*"),
       ]);
