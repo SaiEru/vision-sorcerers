@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { motion } from "framer-motion";
 
 const DoctorProfilePage = () => {
   const { profile, user } = useAuth();
@@ -15,35 +16,20 @@ const DoctorProfilePage = () => {
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
-    full_name: "",
-    phone: "",
-    specialization: "",
-    license_number: "",
-    date_of_birth: "",
-    address: "",
-    qualification: "",
-    experience_years: "",
-    department: "",
-    bio: "",
+    full_name: "", phone: "", specialization: "", license_number: "",
+    date_of_birth: "", address: "", qualification: "", experience_years: "", department: "", bio: "",
   });
 
   if (!profile) return null;
 
   const startEdit = async () => {
-    // Fetch fresh profile data including new columns
     const { data } = await db.from("profiles").select("*").eq("id", profile.id).single();
     const d = data as any;
     setForm({
-      full_name: d?.full_name || "",
-      phone: d?.phone || "",
-      specialization: d?.specialization || "",
-      license_number: d?.license_number || "",
-      date_of_birth: d?.date_of_birth || "",
-      address: d?.address || "",
-      qualification: d?.qualification || "",
-      experience_years: d?.experience_years?.toString() || "",
-      department: d?.department || "",
-      bio: d?.bio || "",
+      full_name: d?.full_name || "", phone: d?.phone || "", specialization: d?.specialization || "",
+      license_number: d?.license_number || "", date_of_birth: d?.date_of_birth || "", address: d?.address || "",
+      qualification: d?.qualification || "", experience_years: d?.experience_years?.toString() || "",
+      department: d?.department || "", bio: d?.bio || "",
     });
     setEditing(true);
   };
@@ -51,27 +37,15 @@ const DoctorProfilePage = () => {
   const handleSave = async () => {
     setSaving(true);
     const { error } = await db.from("profiles").update({
-      full_name: form.full_name,
-      phone: form.phone,
-      specialization: form.specialization,
-      license_number: form.license_number,
-      date_of_birth: form.date_of_birth || null,
-      address: form.address,
-      qualification: form.qualification,
+      full_name: form.full_name, phone: form.phone, specialization: form.specialization,
+      license_number: form.license_number, date_of_birth: form.date_of_birth || null,
+      address: form.address, qualification: form.qualification,
       experience_years: form.experience_years ? parseInt(form.experience_years) : null,
-      department: form.department,
-      bio: form.bio,
+      department: form.department, bio: form.bio,
     }).eq("id", profile.id);
     setSaving(false);
-
-    if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Profile updated" });
-      setEditing(false);
-      // Reload page to refresh profile context
-      window.location.reload();
-    }
+    if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); }
+    else { toast({ title: "Profile updated" }); setEditing(false); window.location.reload(); }
   };
 
   const displayFields = [
@@ -84,81 +58,46 @@ const DoctorProfilePage = () => {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-2xl px-6 py-10">
-        <div className="mb-8 flex items-center justify-between">
+      <div className="mx-auto max-w-2xl px-4 sm:px-6 py-8 sm:py-10">
+        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 border border-primary/20">
               <Stethoscope className="h-8 w-8 text-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-foreground">{profile.full_name || "Doctor"}</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground">{profile.full_name || "Doctor"}</h1>
               <p className="text-muted-foreground">{profile.specialization || "Doctor"}</p>
             </div>
           </div>
           {!editing && (
-            <Button onClick={startEdit} variant="outline" className="gap-2">
+            <Button onClick={startEdit} variant="outline" className="gap-2 border-border hover:bg-primary/10">
               <Pencil className="h-4 w-4" /> Edit Profile
             </Button>
           )}
-        </div>
+        </motion.div>
 
         {editing ? (
-          <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-5">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass-card glow-border p-6 space-y-5">
             <h2 className="text-lg font-semibold text-foreground">Edit Profile</h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                <Label>Full Name</Label>
-                <Input value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} />
-              </div>
-              <div>
-                <Label>Phone</Label>
-                <Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+91 9876543210" />
-              </div>
-              <div>
-                <Label>Specialization</Label>
-                <Input value={form.specialization} onChange={(e) => setForm({ ...form, specialization: e.target.value })} />
-              </div>
-              <div>
-                <Label>License Number</Label>
-                <Input value={form.license_number} onChange={(e) => setForm({ ...form, license_number: e.target.value })} />
-              </div>
-              <div>
-                <Label>Date of Birth</Label>
-                <Input type="date" value={form.date_of_birth} onChange={(e) => setForm({ ...form, date_of_birth: e.target.value })} />
-              </div>
-              <div>
-                <Label>Department</Label>
-                <Input value={form.department} onChange={(e) => setForm({ ...form, department: e.target.value })} placeholder="Ophthalmology" />
-              </div>
-              <div>
-                <Label>Qualification</Label>
-                <Input value={form.qualification} onChange={(e) => setForm({ ...form, qualification: e.target.value })} placeholder="MBBS, MS" />
-              </div>
-              <div>
-                <Label>Years of Experience</Label>
-                <Input type="number" value={form.experience_years} onChange={(e) => setForm({ ...form, experience_years: e.target.value })} placeholder="5" />
-              </div>
+              <div><Label>Full Name</Label><Input value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} /></div>
+              <div><Label>Phone</Label><Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+91 9876543210" /></div>
+              <div><Label>Specialization</Label><Input value={form.specialization} onChange={(e) => setForm({ ...form, specialization: e.target.value })} /></div>
+              <div><Label>License Number</Label><Input value={form.license_number} onChange={(e) => setForm({ ...form, license_number: e.target.value })} /></div>
+              <div><Label>Date of Birth</Label><Input type="date" value={form.date_of_birth} onChange={(e) => setForm({ ...form, date_of_birth: e.target.value })} /></div>
+              <div><Label>Department</Label><Input value={form.department} onChange={(e) => setForm({ ...form, department: e.target.value })} placeholder="Ophthalmology" /></div>
+              <div><Label>Qualification</Label><Input value={form.qualification} onChange={(e) => setForm({ ...form, qualification: e.target.value })} placeholder="MBBS, MS" /></div>
+              <div><Label>Years of Experience</Label><Input type="number" value={form.experience_years} onChange={(e) => setForm({ ...form, experience_years: e.target.value })} placeholder="5" /></div>
             </div>
-            <div>
-              <Label>Address</Label>
-              <Input value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} placeholder="City, State" />
-            </div>
-            <div>
-              <Label>Bio</Label>
-              <Textarea value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} placeholder="A short professional bio..." rows={3} />
-            </div>
+            <div><Label>Address</Label><Input value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} placeholder="City, State" /></div>
+            <div><Label>Bio</Label><Textarea value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} placeholder="A short professional bio..." rows={3} /></div>
             <div className="flex gap-3 pt-2">
-              <Button onClick={handleSave} disabled={saving} className="gap-2">
-                <Save className="h-4 w-4" /> {saving ? "Saving..." : "Save Changes"}
-              </Button>
-              <Button variant="outline" onClick={() => setEditing(false)} className="gap-2">
-                <X className="h-4 w-4" /> Cancel
-              </Button>
+              <Button onClick={handleSave} disabled={saving} className="gap-2 shadow-[0_0_20px_hsl(221_83%_53%/0.2)]"><Save className="h-4 w-4" /> {saving ? "Saving..." : "Save Changes"}</Button>
+              <Button variant="outline" onClick={() => setEditing(false)} className="gap-2 border-border"><X className="h-4 w-4" /> Cancel</Button>
             </div>
-          </div>
+          </motion.div>
         ) : (
-          <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass-card glow-border p-6">
             <h2 className="mb-6 text-lg font-semibold text-foreground">Profile Details</h2>
             <div className="space-y-5">
               {displayFields.map((f) => (
@@ -173,9 +112,8 @@ const DoctorProfilePage = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
-      </div>
       </div>
     </AppLayout>
   );

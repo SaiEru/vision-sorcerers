@@ -11,21 +11,11 @@ import { UserPlus, Stethoscope, Mail, Phone, Loader2, Pencil } from "lucide-reac
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog";
+import { motion } from "framer-motion";
 
 type Doctor = {
-  id: string;
-  email: string;
-  full_name: string;
-  specialization: string;
-  phone: string;
-  license_number: string;
-  created_at: string;
-  date_of_birth: string | null;
-  address: string;
-  qualification: string;
-  experience_years: number | null;
-  department: string;
-  bio: string;
+  id: string; email: string; full_name: string; specialization: string; phone: string; license_number: string;
+  created_at: string; date_of_birth: string | null; address: string; qualification: string; experience_years: number | null; department: string; bio: string;
 };
 
 const AdminDoctorsPage = () => {
@@ -36,32 +26,15 @@ const AdminDoctorsPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({ email: "", password: "", full_name: "", specialization: "", phone: "", license_number: "" });
   const [editForm, setEditForm] = useState({
-    doctor_id: "",
-    email: "",
-    password: "",
-    full_name: "",
-    specialization: "",
-    phone: "",
-    license_number: "",
-    date_of_birth: "",
-    address: "",
-    qualification: "",
-    experience_years: "",
-    department: "",
-    bio: "",
+    doctor_id: "", email: "", password: "", full_name: "", specialization: "", phone: "", license_number: "",
+    date_of_birth: "", address: "", qualification: "", experience_years: "", department: "", bio: "",
   });
   const { toast } = useToast();
 
   const loadDoctors = async () => {
     const { data: roleRows } = await db.from("user_roles").select("user_id").eq("role", "doctor");
     const doctorIds = (roleRows || []).map((r: any) => r.user_id);
-
-    if (doctorIds.length === 0) {
-      setDoctors([]);
-      setLoading(false);
-      return;
-    }
-
+    if (doctorIds.length === 0) { setDoctors([]); setLoading(false); return; }
     const { data } = await db.from("profiles").select("*").in("id", doctorIds).order("created_at", { ascending: false });
     setDoctors((data as Doctor[]) || []);
     setLoading(false);
@@ -97,19 +70,10 @@ const AdminDoctorsPage = () => {
 
   const openEdit = (doc: Doctor) => {
     setEditForm({
-      doctor_id: doc.id,
-      email: doc.email,
-      password: "",
-      full_name: doc.full_name,
-      specialization: doc.specialization || "",
-      phone: doc.phone || "",
-      license_number: doc.license_number || "",
-      date_of_birth: doc.date_of_birth || "",
-      address: doc.address || "",
-      qualification: doc.qualification || "",
-      experience_years: doc.experience_years?.toString() || "",
-      department: doc.department || "",
-      bio: doc.bio || "",
+      doctor_id: doc.id, email: doc.email, password: "", full_name: doc.full_name,
+      specialization: doc.specialization || "", phone: doc.phone || "", license_number: doc.license_number || "",
+      date_of_birth: doc.date_of_birth || "", address: doc.address || "", qualification: doc.qualification || "",
+      experience_years: doc.experience_years?.toString() || "", department: doc.department || "", bio: doc.bio || "",
     });
     setEditOpen(true);
   };
@@ -122,7 +86,6 @@ const AdminDoctorsPage = () => {
       const body: any = { ...editForm, experience_years: editForm.experience_years ? parseInt(editForm.experience_years) : null };
       if (!body.password) delete body.password;
       if (!body.date_of_birth) body.date_of_birth = null;
-
       const res = await fetch(`${url}/functions/v1/update-doctor`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token}` },
@@ -141,18 +104,17 @@ const AdminDoctorsPage = () => {
 
   return (
     <AppLayout>
-      <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-5xl px-6 py-10">
-        <div className="flex items-center justify-between">
-          <div>
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 py-8 sm:py-10">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
             <h1 className="text-3xl font-bold text-foreground">Manage Doctors</h1>
             <p className="mt-2 text-muted-foreground">Add and manage doctor accounts.</p>
-          </div>
+          </motion.div>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button className="gap-2"><UserPlus className="h-4 w-4" />Add Doctor</Button>
+              <Button className="gap-2 shadow-[0_0_20px_hsl(221_83%_53%/0.2)]"><UserPlus className="h-4 w-4" />Add Doctor</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="border-border bg-card">
               <DialogHeader><DialogTitle>Add New Doctor</DialogTitle></DialogHeader>
               <div className="space-y-4 pt-4">
                 <div><Label>Full Name *</Label><Input value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} placeholder="Dr. John Doe" /></div>
@@ -161,7 +123,7 @@ const AdminDoctorsPage = () => {
                 <div><Label>Specialization</Label><Input value={form.specialization} onChange={(e) => setForm({ ...form, specialization: e.target.value })} placeholder="Ophthalmology" /></div>
                 <div><Label>Phone</Label><Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+91 9876543210" /></div>
                 <div><Label>License Number</Label><Input value={form.license_number} onChange={(e) => setForm({ ...form, license_number: e.target.value })} placeholder="MCI-12345" /></div>
-                <Button onClick={handleCreate} disabled={submitting} className="w-full gap-2">
+                <Button onClick={handleCreate} disabled={submitting} className="w-full gap-2 shadow-[0_0_20px_hsl(221_83%_53%/0.2)]">
                   {submitting && <Loader2 className="h-4 w-4 animate-spin" />} Create Doctor Account
                 </Button>
               </div>
@@ -171,7 +133,7 @@ const AdminDoctorsPage = () => {
 
         {/* Edit Doctor Dialog */}
         <Dialog open={editOpen} onOpenChange={setEditOpen}>
-          <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
+          <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg border-border bg-card">
             <DialogHeader><DialogTitle>Edit Doctor Profile</DialogTitle></DialogHeader>
             <div className="space-y-4 pt-4">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -188,7 +150,7 @@ const AdminDoctorsPage = () => {
               </div>
               <div><Label>Address</Label><Input value={editForm.address} onChange={(e) => setEditForm({ ...editForm, address: e.target.value })} /></div>
               <div><Label>Bio</Label><Textarea value={editForm.bio} onChange={(e) => setEditForm({ ...editForm, bio: e.target.value })} rows={3} /></div>
-              <Button onClick={handleUpdate} disabled={submitting} className="w-full gap-2">
+              <Button onClick={handleUpdate} disabled={submitting} className="w-full gap-2 shadow-[0_0_20px_hsl(221_83%_53%/0.2)]">
                 {submitting && <Loader2 className="h-4 w-4 animate-spin" />} Save Changes
               </Button>
             </div>
@@ -198,15 +160,22 @@ const AdminDoctorsPage = () => {
         {loading ? (
           <div className="mt-12 flex justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>
         ) : doctors.length === 0 ? (
-          <div className="mt-12 rounded-xl border border-border bg-card p-12 text-center shadow-sm">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-12 glass-card glow-border p-12 text-center">
             <Stethoscope className="mx-auto h-12 w-12 text-muted-foreground/40" />
             <h3 className="mt-4 text-lg font-semibold text-foreground">No doctors yet</h3>
             <p className="mt-2 text-muted-foreground">Click "Add Doctor" to create the first doctor account.</p>
-          </div>
+          </motion.div>
         ) : (
           <div className="mt-8 space-y-4">
-            {doctors.map((doc) => (
-              <div key={doc.id} className="flex items-center justify-between rounded-xl border border-border bg-card p-5 shadow-sm">
+            {doctors.map((doc, i) => (
+              <motion.div
+                key={doc.id}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                whileHover={{ scale: 1.01 }}
+                className="glass-card glow-border flex items-center justify-between p-5"
+              >
                 <div className="flex items-start gap-4">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
                     <Stethoscope className="h-5 w-5 text-primary" />
@@ -223,14 +192,13 @@ const AdminDoctorsPage = () => {
                     </p>
                   </div>
                 </div>
-                <Button variant="outline" size="sm" className="gap-2" onClick={() => openEdit(doc)}>
+                <Button variant="outline" size="sm" className="gap-2 border-border hover:bg-primary/10" onClick={() => openEdit(doc)}>
                   <Pencil className="h-4 w-4" /> Edit
                 </Button>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}
-      </div>
       </div>
     </AppLayout>
   );
