@@ -140,8 +140,8 @@ const AdminDoctorsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <AppLayout>
+      <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-5xl px-6 py-10">
         <div className="flex items-center justify-between">
           <div>
