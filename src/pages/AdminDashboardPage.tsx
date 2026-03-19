@@ -24,7 +24,7 @@ const AdminDashboardPage = () => {
       const highRisk = allAssessments.filter((a: any) => a.risk_level === "High" || a.risk_level === "Critical").length;
 
       setStats({
-        totalDoctors: doctorsRes.count || 0,
+        totalDoctors: doctorRolesRes.data?.length || 0,
         totalPatients: patientsRes.count || 0,
         totalAssessments: allAssessments.length,
         highRiskCount: highRisk,
