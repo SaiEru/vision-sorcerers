@@ -313,7 +313,8 @@ const AdminReportsPage = () => {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </AppLayout>
   );
 };
 

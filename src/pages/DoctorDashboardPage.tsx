@@ -318,7 +318,8 @@ const DoctorDashboardPage = () => {
           </DialogContent>
         </Dialog>
       </div>
-    </div>
+      </div>
+    </AppLayout>
   );
 };
 

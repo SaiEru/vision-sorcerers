@@ -176,7 +176,8 @@ const DoctorProfilePage = () => {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </AppLayout>
   );
 };
 

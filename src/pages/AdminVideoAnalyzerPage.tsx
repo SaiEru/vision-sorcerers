@@ -377,7 +377,8 @@ const AdminVideoAnalyzerPage = () => {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </AppLayout>
   );
 };
 

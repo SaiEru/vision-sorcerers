@@ -231,7 +231,8 @@ const AdminDoctorsPage = () => {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </AppLayout>
   );
 };
 

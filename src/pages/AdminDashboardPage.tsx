@@ -166,7 +166,8 @@ const AdminDashboardPage = () => {
           </motion.div>
         )}
       </div>
-    </div>
+      </div>
+    </AppLayout>
   );
 };
 
