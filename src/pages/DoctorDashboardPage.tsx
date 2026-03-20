@@ -36,15 +36,14 @@ const DoctorDashboardPage = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const loadPatients = async () => {
-    if (!user) return;
-    const { data } = await db.from("patients").select("*").eq("doctor_id", user.id).order("created_at", { ascending: false });
-    setPatients((data as Patient[]) || []); setLoading(false);
+  const loadPatients = async (userId: string) => {
+    const { data } = await db.from("patients").select("*").eq("doctor_id", userId).order("created_at", { ascending: false });
+    setPatients((data as Patient[]) || []);
+    setLoading(false);
   };
 
-  const loadAssessmentCounts = async () => {
-    if (!user) return;
-    const { data } = await db.from("assessments").select("id, patient_id").eq("doctor_id", user.id);
+  const loadAssessmentCounts = async (userId: string) => {
+    const { data } = await db.from("assessments").select("id, patient_id").eq("doctor_id", userId);
     if (data) {
       setTotalAssessments(data.length);
       const counts: Record<string, number> = {};
@@ -53,7 +52,12 @@ const DoctorDashboardPage = () => {
     }
   };
 
-  useEffect(() => { loadPatients(); loadAssessmentCounts(); }, [user]);
+  useEffect(() => {
+    if (!user) return;
+    setLoading(true);
+    loadPatients(user.id);
+    loadAssessmentCounts(user.id);
+  }, [user]);
 
   const handleCreate = async () => {
     if (!form.full_name || !user) { toast({ title: "Name is required", variant: "destructive" }); return; }
@@ -65,7 +69,7 @@ const DoctorDashboardPage = () => {
     });
     setSubmitting(false);
     if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); }
-    else { toast({ title: "Patient added" }); setForm({ full_name: "", age: "", gender: "", contact_number: "", diagnosis: "", notes: "" }); setOpen(false); loadPatients(); }
+    else { toast({ title: "Patient added" }); setForm({ full_name: "", age: "", gender: "", contact_number: "", diagnosis: "", notes: "" }); setOpen(false); loadPatients(user.id); loadAssessmentCounts(user.id); }
   };
 
   const handleViewPatient = async (patient: Patient) => {
