@@ -58,7 +58,17 @@ const AdminDashboardPage = () => {
     return acc;
   }, {});
 
-  const riskData = Object.entries(riskBreakdown).map(([name, count]) => ({ name, count }));
+  const riskColors: Record<string, string> = {
+    Low: "hsl(199, 89%, 58%)",
+    Moderate: "hsl(35, 95%, 60%)",
+    High: "hsl(15, 90%, 58%)",
+    Critical: "hsl(350, 85%, 55%)",
+  };
+
+  const riskData = Object.entries(riskBreakdown).map(([name, count]) => ({
+    name, count,
+    fill: riskColors[name] || "hsl(265, 80%, 65%)",
+  }));
 
   const statCards = [
     { label: "Total Doctors", value: stats.totalDoctors.toString(), icon: Stethoscope, color: "from-primary/20 to-primary/5" },
