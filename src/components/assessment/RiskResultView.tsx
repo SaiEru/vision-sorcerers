@@ -28,10 +28,12 @@ const riskColors: Record<string, string> = {
   Critical: "bg-destructive",
 };
 
+const LANG_LABELS: Record<string, string> = { english: "English", telugu: "Telugu", kannada: "Kannada" };
+
 const RiskResultView = ({
   result, onReset, data,
   aiExplanation = [], aiExplanationCategorized = [], clinicalStepsCategorized = [], clinicalStepsFlat = [],
-  aiLoading = false, doctorName = "", doctorLicense = ""
+  aiLoading = false, doctorName = "", doctorLicense = "", language = "english"
 }: Props) => {
   const handlePdfDownload = () => {
     generatePdfReport({
