@@ -69,7 +69,7 @@ const DoctorDashboardPage = () => {
     });
     setSubmitting(false);
     if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); }
-    else { toast({ title: "Patient added" }); setForm({ full_name: "", age: "", gender: "", contact_number: "", diagnosis: "", notes: "" }); setOpen(false); loadPatients(); }
+    else { toast({ title: "Patient added" }); setForm({ full_name: "", age: "", gender: "", contact_number: "", diagnosis: "", notes: "" }); setOpen(false); loadPatients(user.id); loadAssessmentCounts(user.id); }
   };
 
   const handleViewPatient = async (patient: Patient) => {
