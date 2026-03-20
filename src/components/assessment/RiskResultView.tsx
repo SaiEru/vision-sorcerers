@@ -1,11 +1,18 @@
 import { RiskResult, AssessmentData } from "@/types/assessment";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { AlertTriangle, CheckCircle2, TrendingUp, Download, FileText, Loader2, Brain, Stethoscope } from "lucide-react";
+import { AlertTriangle, CheckCircle2, TrendingUp, Download, FileText, Loader2, Brain, Stethoscope, Languages } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { generatePdfReport } from "@/lib/generatePdfReport";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type CategorizedItem = { category: string; points?: string[]; steps?: string[] };
+
+const LANGUAGES = [
+  { value: "english", label: "English" },
+  { value: "telugu", label: "Telugu (తెలుగు)" },
+  { value: "kannada", label: "Kannada (ಕನ್ನಡ)" },
+];
 
 type Props = {
   result: RiskResult;
@@ -19,6 +26,7 @@ type Props = {
   doctorName?: string;
   doctorLicense?: string;
   language?: string;
+  onLanguageChange?: (lang: string) => void;
 };
 
 const riskColors: Record<string, string> = {
