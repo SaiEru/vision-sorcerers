@@ -2,7 +2,7 @@ import AppLayout from "@/components/AppLayout";
 import { Activity, AlertTriangle, TrendingUp, Camera, Users, Stethoscope } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell,
+  PieChart, Pie, Cell, Legend,
 } from "recharts";
 import { useEffect, useState } from "react";
 import { db } from "@/lib/supabaseDb";
@@ -40,9 +40,17 @@ const AdminDashboardPage = () => {
     return acc;
   }, {});
 
+  const pieColors = [
+    "hsl(199, 89%, 58%)",  // bright cyan
+    "hsl(145, 80%, 50%)",  // vivid green
+    "hsl(35, 95%, 60%)",   // bright amber
+    "hsl(330, 80%, 60%)",  // hot pink
+    "hsl(265, 80%, 65%)",  // vivid purple
+    "hsl(15, 90%, 58%)",   // bright orange
+  ];
   const pieData = Object.entries(surgeryBreakdown).map(([name, value], i) => ({
     name, value,
-    color: ["hsl(221, 83%, 53%)", "hsl(142, 71%, 45%)", "hsl(38, 92%, 50%)", "hsl(0, 84%, 60%)"][i % 4],
+    color: pieColors[i % pieColors.length],
   }));
 
   const riskBreakdown = assessments.reduce((acc: Record<string, number>, a: any) => {
@@ -50,7 +58,17 @@ const AdminDashboardPage = () => {
     return acc;
   }, {});
 
-  const riskData = Object.entries(riskBreakdown).map(([name, count]) => ({ name, count }));
+  const riskColors: Record<string, string> = {
+    Low: "hsl(199, 89%, 58%)",
+    Moderate: "hsl(35, 95%, 60%)",
+    High: "hsl(15, 90%, 58%)",
+    Critical: "hsl(350, 85%, 55%)",
+  };
+
+  const riskData = Object.entries(riskBreakdown).map(([name, count]) => ({
+    name, count,
+    fill: riskColors[name] || "hsl(265, 80%, 65%)",
+  }));
 
   const statCards = [
     { label: "Total Doctors", value: stats.totalDoctors.toString(), icon: Stethoscope, color: "from-primary/20 to-primary/5" },
@@ -114,14 +132,15 @@ const AdminDashboardPage = () => {
               <h3 className="mb-4 text-lg font-semibold text-foreground">Surgery Type Distribution</h3>
               <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
-                  <Pie data={pieData} cx="50%" cy="50%" innerRadius={60} outerRadius={90} dataKey="value" stroke="none">
+                  <Pie data={pieData} cx="50%" cy="50%" innerRadius={55} outerRadius={85} dataKey="value" stroke="hsl(222, 47%, 8%)" strokeWidth={2} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
                     {pieData.map((entry, i) => (
                       <Cell key={i} fill={entry.color} />
                     ))}
                   </Pie>
                   <Tooltip
-                    contentStyle={{ backgroundColor: "hsl(222, 47%, 11%)", border: "1px solid hsl(222, 30%, 18%)", borderRadius: "8px", color: "hsl(210, 40%, 96%)" }}
+                    contentStyle={{ backgroundColor: "hsl(222, 47%, 11%)", border: "1px solid hsl(222, 30%, 25%)", borderRadius: "8px", color: "hsl(210, 40%, 96%)" }}
                   />
+                  <Legend wrapperStyle={{ color: "hsl(210, 40%, 85%)", fontSize: 12 }} />
                 </PieChart>
               </ResponsiveContainer>
             </motion.div>
@@ -143,7 +162,11 @@ const AdminDashboardPage = () => {
                   <Tooltip
                     contentStyle={{ backgroundColor: "hsl(222, 47%, 11%)", border: "1px solid hsl(222, 30%, 18%)", borderRadius: "8px", color: "hsl(210, 40%, 96%)" }}
                   />
-                  <Bar dataKey="count" fill="hsl(221, 83%, 53%)" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="count" radius={[6, 6, 0, 0]}>
+                    {riskData.map((entry, i) => (
+                      <Cell key={i} fill={entry.fill} />
+                    ))}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </motion.div>
