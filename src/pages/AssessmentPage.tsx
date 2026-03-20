@@ -497,6 +497,7 @@ const AssessmentPage = () => {
             aiExplanation={aiExplanation} aiExplanationCategorized={aiExplanationCategorized}
             clinicalStepsCategorized={clinicalStepsCategorized} clinicalStepsFlat={clinicalStepsFlat}
             aiLoading={aiLoading} language={language}
+            onLanguageChange={handleLanguageChange}
           />
         </div>
       </AppLayout>
