@@ -40,9 +40,17 @@ const AdminDashboardPage = () => {
     return acc;
   }, {});
 
+  const pieColors = [
+    "hsl(199, 89%, 58%)",  // bright cyan
+    "hsl(145, 80%, 50%)",  // vivid green
+    "hsl(35, 95%, 60%)",   // bright amber
+    "hsl(330, 80%, 60%)",  // hot pink
+    "hsl(265, 80%, 65%)",  // vivid purple
+    "hsl(15, 90%, 58%)",   // bright orange
+  ];
   const pieData = Object.entries(surgeryBreakdown).map(([name, value], i) => ({
     name, value,
-    color: ["hsl(221, 83%, 53%)", "hsl(142, 71%, 45%)", "hsl(38, 92%, 50%)", "hsl(0, 84%, 60%)"][i % 4],
+    color: pieColors[i % pieColors.length],
   }));
 
   const riskBreakdown = assessments.reduce((acc: Record<string, number>, a: any) => {
