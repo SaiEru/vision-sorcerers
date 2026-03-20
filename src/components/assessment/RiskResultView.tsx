@@ -18,6 +18,7 @@ type Props = {
   aiLoading?: boolean;
   doctorName?: string;
   doctorLicense?: string;
+  language?: string;
 };
 
 const riskColors: Record<string, string> = {
