@@ -132,14 +132,15 @@ const AdminDashboardPage = () => {
               <h3 className="mb-4 text-lg font-semibold text-foreground">Surgery Type Distribution</h3>
               <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
-                  <Pie data={pieData} cx="50%" cy="50%" innerRadius={60} outerRadius={90} dataKey="value" stroke="none">
+                  <Pie data={pieData} cx="50%" cy="50%" innerRadius={55} outerRadius={85} dataKey="value" stroke="hsl(222, 47%, 8%)" strokeWidth={2} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
                     {pieData.map((entry, i) => (
                       <Cell key={i} fill={entry.color} />
                     ))}
                   </Pie>
                   <Tooltip
-                    contentStyle={{ backgroundColor: "hsl(222, 47%, 11%)", border: "1px solid hsl(222, 30%, 18%)", borderRadius: "8px", color: "hsl(210, 40%, 96%)" }}
+                    contentStyle={{ backgroundColor: "hsl(222, 47%, 11%)", border: "1px solid hsl(222, 30%, 25%)", borderRadius: "8px", color: "hsl(210, 40%, 96%)" }}
                   />
+                  <Legend wrapperStyle={{ color: "hsl(210, 40%, 85%)", fontSize: 12 }} />
                 </PieChart>
               </ResponsiveContainer>
             </motion.div>
