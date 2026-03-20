@@ -183,6 +183,37 @@ const AssessmentPage = () => {
     await saveAssessment(data, r, aiResult.flat, aiResult.flatSteps);
   };
 
+  const handleLanguageChange = async (newLang: string) => {
+    setLanguage(newLang);
+    if (!result) return;
+    setAiLoading(true);
+    try {
+      const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+      const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      const response = await fetch(`${SUPABASE_URL}/functions/v1/generate-risk-explanation`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${SUPABASE_KEY}` },
+        body: JSON.stringify({
+          assessmentData: data,
+          riskScore: result.overallScore,
+          riskLevel: result.riskLevel,
+          factors: result.factors,
+          language: newLang,
+        }),
+      });
+      if (response.ok) {
+        const res = await response.json();
+        setAiExplanation(res.explanation || []);
+        setAiExplanationCategorized(res.riskExplanation || []);
+        setClinicalStepsCategorized(res.clinicalSteps || []);
+        setClinicalStepsFlat(res.flatSteps || []);
+      }
+    } catch {
+      toast({ title: "Failed to regenerate", description: "Could not regenerate AI analysis in the selected language.", variant: "destructive" });
+    }
+    setAiLoading(false);
+  };
+
   const handleReset = () => {
     setData(initialAssessmentData);
     setResult(null);
