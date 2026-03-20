@@ -9,18 +9,6 @@ import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedBackground from "@/components/AnimatedBackground";
 
-const FloatingParticle = ({ delay, x, y, size }: { delay: number; x: string; y: string; size: number }) => (
-  <motion.div
-    className="absolute rounded-full bg-primary/20"
-    style={{ left: x, top: y, width: size, height: size }}
-    animate={{
-      y: [0, -20, 0],
-      opacity: [0.2, 0.6, 0.2],
-      scale: [1, 1.3, 1],
-    }}
-    transition={{ duration: 3 + delay, repeat: Infinity, delay }}
-  />
-);
 
 const LoginPage = () => {
   const [mode, setMode] = useState<"choose" | "admin" | "doctor">("choose");
