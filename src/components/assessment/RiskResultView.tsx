@@ -41,7 +41,8 @@ const LANG_LABELS: Record<string, string> = { english: "English", telugu: "Telug
 const RiskResultView = ({
   result, onReset, data,
   aiExplanation = [], aiExplanationCategorized = [], clinicalStepsCategorized = [], clinicalStepsFlat = [],
-  aiLoading = false, doctorName = "", doctorLicense = "", language = "english"
+  aiLoading = false, doctorName = "", doctorLicense = "", language = "english",
+  onLanguageChange
 }: Props) => {
   const handlePdfDownload = () => {
     generatePdfReport({
