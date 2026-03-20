@@ -135,9 +135,25 @@ const RiskResultView = ({
         <Badge className={`mt-4 ${riskColors[result.riskLevel]} text-primary-foreground px-4 py-1`}>
           {result.riskLevel} Risk
         </Badge>
-        {language !== "english" && (
-          <p className="mt-2 text-xs text-muted-foreground">AI output language: {LANG_LABELS[language] || language}</p>
-        )}
+      </div>
+
+      {/* Language Selection */}
+      <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+        <div className="flex items-center gap-3 flex-wrap">
+          <Languages className="h-5 w-5 text-primary shrink-0" />
+          <span className="text-sm font-medium text-foreground">AI Analysis Language:</span>
+          <Select value={language} onValueChange={(val) => onLanguageChange?.(val)} disabled={aiLoading}>
+            <SelectTrigger className="w-48">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {LANGUAGES.map((l) => (
+                <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {aiLoading && <span className="text-xs text-muted-foreground flex items-center gap-1"><Loader2 className="h-3 w-3 animate-spin" /> Regenerating...</span>}
+        </div>
       </div>
 
       {/* AI Risk Explanation with categories */}
