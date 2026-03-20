@@ -18,6 +18,7 @@ type Props = {
   aiLoading?: boolean;
   doctorName?: string;
   doctorLicense?: string;
+  language?: string;
 };
 
 const riskColors: Record<string, string> = {
@@ -27,10 +28,12 @@ const riskColors: Record<string, string> = {
   Critical: "bg-destructive",
 };
 
+const LANG_LABELS: Record<string, string> = { english: "English", telugu: "Telugu", kannada: "Kannada" };
+
 const RiskResultView = ({
   result, onReset, data,
   aiExplanation = [], aiExplanationCategorized = [], clinicalStepsCategorized = [], clinicalStepsFlat = [],
-  aiLoading = false, doctorName = "", doctorLicense = ""
+  aiLoading = false, doctorName = "", doctorLicense = "", language = "english"
 }: Props) => {
   const handlePdfDownload = () => {
     generatePdfReport({
@@ -123,6 +126,9 @@ const RiskResultView = ({
         <Badge className={`mt-4 ${riskColors[result.riskLevel]} text-primary-foreground px-4 py-1`}>
           {result.riskLevel} Risk
         </Badge>
+        {language !== "english" && (
+          <p className="mt-2 text-xs text-muted-foreground">AI output language: {LANG_LABELS[language] || language}</p>
+        )}
       </div>
 
       {/* AI Risk Explanation with categories */}

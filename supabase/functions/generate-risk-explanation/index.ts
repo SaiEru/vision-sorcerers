@@ -9,11 +9,13 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { assessmentData, riskScore, riskLevel, factors } = await req.json();
+    const { assessmentData, riskScore, riskLevel, factors, language = "english" } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const systemPrompt = `You are a clinical ophthalmology AI assistant. Given patient assessment data, risk score, and risk factors, generate TWO outputs:
+    const langInstruction = language !== "english" ? `\n\nIMPORTANT: Generate ALL output text (both risk explanation points and clinical steps) entirely in ${language}. Use ${language} script and language for all content. Category headings should also be in ${language}.` : "";
+
+    const systemPrompt = `You are a clinical ophthalmology AI assistant. Given patient assessment data, risk score, and risk factors, generate TWO outputs:${langInstruction}
 
 1. **Categorized Risk Explanation** — A detailed clinical risk explanation organized into categories with subheadings. Each category should have multiple bullet points. Categories:
    - Demographics & General Health
