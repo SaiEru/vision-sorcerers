@@ -126,6 +126,9 @@ const RiskResultView = ({
         <Badge className={`mt-4 ${riskColors[result.riskLevel]} text-primary-foreground px-4 py-1`}>
           {result.riskLevel} Risk
         </Badge>
+        {language !== "english" && (
+          <p className="mt-2 text-xs text-muted-foreground">AI output language: {LANG_LABELS[language] || language}</p>
+        )}
       </div>
 
       {/* AI Risk Explanation with categories */}
